@@ -13,6 +13,7 @@
    
 ## 진행 현황
 1. 채팅 서버 구축  (09/22) 
+2. Stomp/ jpa를 활용한 구현 (09/29)
 
 ##refer
 - https://daddyprogrammer.org/post/4077/spring-websocket-chatting/?amp
