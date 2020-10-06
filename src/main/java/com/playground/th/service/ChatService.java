@@ -1,5 +1,6 @@
 package com.playground.th.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.playground.th.domain.ChatRoom;
 import com.playground.th.repository.ChatRoomCustomRepository;
 import com.playground.th.repository.ChatRoomRepository;
@@ -7,7 +8,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,6 +20,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class ChatService {
+
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomCustomRepository chatRoomCustomRepository;
 
@@ -38,4 +43,5 @@ public class ChatService {
         chatRoomRepository.save(room);
         return room;
     }
+
 }

@@ -1,10 +1,13 @@
+server:
+  port: 5800
 spring:
   datasource:
     url:   jdbc:h2:tcp://localhost/~/chatt
     username: sa
     password:
     driver-class-name: org.h2.Driver
-
+  jwt:
+    secret: wonseok1234!
   jpa:
     hibernate:
       ddl-auto: create
