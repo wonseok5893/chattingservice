@@ -3,6 +3,7 @@ package com.playground.th;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 
+    @Profile("!stomp")
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/sub");
@@ -29,24 +31,24 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/connect").setAllowedOrigins("*").withSockJS();
-//        .setHandshakeHandler(new DefaultHandshakeHandler() {
-//
-//                    public boolean beforeHandshake(
-//                            ServerHttpRequest request,
-//                            ServerHttpResponse response,
-//                            WebSocketHandler wsHandler,
-//                            Map attributes) throws Exception {
-//
-//                            if (request instanceof ServletServerHttpRequest) {
-//                                ServletServerHttpRequest servletRequest
-//                                    = (ServletServerHttpRequest) request;
-//                            HttpSession session = servletRequest
-//                                    .getServletRequest().getSession();
-//                            attributes.put("sessionId", session.getId());
-//                        }
-//                        return true;
-//                    }});
+        registry.addEndpoint("/connect").setAllowedOrigins("*");
+        //.setHandshakeHandler(new DefaultHandshakeHandler() {
+        //
+        //            public boolean beforeHandshake(
+        //                    ServerHttpRequest request,
+        //                    ServerHttpResponse response,
+        //                    WebSocketHandler wsHandler,
+        //                    Map attributes) throws Exception {
+        //
+        //                if (request instanceof ServletServerHttpRequest) {
+        //                    ServletServerHttpRequest servletRequest
+        //                            = (ServletServerHttpRequest) request;
+        //                    HttpSession session = servletRequest
+        //                            .getServletRequest().getSession();
+        //                    attributes.put("sessionId", session.getId());
+        //                }
+        //                return true;
+        //            }})
     }
 
 }

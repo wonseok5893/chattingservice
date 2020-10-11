@@ -19,3 +19,4 @@
 - https://daddyprogrammer.org/post/4077/spring-websocket-chatting/?amp
 - https://bcho.tistory.com/1058
 - https://m.blog.naver.com/PostView.nhn?blogId=ioi___s_s&logNo=221448388699&proxyReferer=https:%2F%2Fwww.google.com%2F
+- https://supawer0728.github.io/2018/03/30/spring-websocket/

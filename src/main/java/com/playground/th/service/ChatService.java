@@ -31,17 +31,17 @@ public class ChatService {
     }
 
     public ChatRoom findById(String id) {
-       return chatRoomRepository.findById(id).get();
+        return chatRoomRepository.findById(id).get();
     }
 
     public ChatRoom findByName(String name) {
         return chatRoomRepository.findByName(name);
     }
+
     @Transactional
     public ChatRoom createChatRoom(String name) {
         ChatRoom room = chatRoomCustomRepository.createRoom(name);
         chatRoomRepository.save(room);
         return room;
     }
-
 }

@@ -18,7 +18,6 @@ public class ChatRoom {
     @Id
     private String roomId;
     private String name;
-
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private List<ChatMessage> chatMessages;
 
@@ -26,7 +25,7 @@ public class ChatRoom {
     //생성 메서드
     public static ChatRoom create(String name) {
         ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setRoomId(UUID.randomUUID().toString());
+        chatRoom.setRoomId("1");
         chatRoom.setName(name);
         return chatRoom;
     }
