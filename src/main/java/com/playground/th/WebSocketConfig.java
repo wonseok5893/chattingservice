@@ -30,23 +30,23 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/connect").setAllowedOrigins("*").withSockJS();
-        //.setHandshakeHandler(new DefaultHandshakeHandler() {
-        //
-        //            public boolean beforeHandshake(
-        //                    ServerHttpRequest request,
-        //                    ServerHttpResponse response,
-        //                    WebSocketHandler wsHandler,
-        //                    Map attributes) throws Exception {
-        //
-        //                if (request instanceof ServletServerHttpRequest) {
-        //                    ServletServerHttpRequest servletRequest
-        //                            = (ServletServerHttpRequest) request;
-        //                    HttpSession session = servletRequest
-        //                            .getServletRequest().getSession();
-        //                    attributes.put("sessionId", session.getId());
-        //                }
-        //                return true;
-        //            }})
+//        .setHandshakeHandler(new DefaultHandshakeHandler() {
+//
+//                    public boolean beforeHandshake(
+//                            ServerHttpRequest request,
+//                            ServerHttpResponse response,
+//                            WebSocketHandler wsHandler,
+//                            Map attributes) throws Exception {
+//
+//                            if (request instanceof ServletServerHttpRequest) {
+//                                ServletServerHttpRequest servletRequest
+//                                    = (ServletServerHttpRequest) request;
+//                            HttpSession session = servletRequest
+//                                    .getServletRequest().getSession();
+//                            attributes.put("sessionId", session.getId());
+//                        }
+//                        return true;
+//                    }});
     }
 
 }
