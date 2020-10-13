@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class ChatService {
-
+    private final ObjectMapper objectMapper;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomCustomRepository chatRoomCustomRepository;
 
@@ -43,5 +43,12 @@ public class ChatService {
         ChatRoom room = chatRoomCustomRepository.createRoom(name);
         chatRoomRepository.save(room);
         return room;
+    }
+    public <T> void sendMessage(WebSocketSession session, T message) {
+        try {
+            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 }
