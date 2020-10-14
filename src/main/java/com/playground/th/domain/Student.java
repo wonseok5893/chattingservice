@@ -9,6 +9,7 @@ import javax.persistence.Embeddable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Embeddable
 public class Student {
     String university;
     String major;
