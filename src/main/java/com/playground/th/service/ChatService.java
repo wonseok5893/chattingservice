@@ -44,7 +44,10 @@ public class ChatService {
         chatRoomRepository.save(room);
         return room;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3f740089c2cae5fb0e3b1c5de607d49d319774bc
     public <T> void sendMessage(WebSocketSession session, T message) {
         try {
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));

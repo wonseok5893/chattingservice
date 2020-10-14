@@ -13,7 +13,10 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+<<<<<<< HEAD
 import org.springframework.web.socket.TextMessage;
+=======
+>>>>>>> 3f740089c2cae5fb0e3b1c5de607d49d319774bc
 import org.springframework.web.socket.WebSocketSession;
 
 import javax.websocket.server.PathParam;
@@ -46,8 +49,13 @@ public class ChatController {
         if (MessageType.ENTER.toString().equals(chatMessageDto.getType())) {
             chatMessageDto.setMessage(chatMessageDto.getSender()+" 님이 입장하셨습니다.");
         }
+<<<<<<< HEAD
         headerAccessor.getSessionAttributes().put("sender",chatMessageDto.getSender());
         String text = "hello";
         TextMessage message = new TextMessage(text);
+=======
+
+        System.out.println("/sub/chat/room/"+chatMessageDto.getRoomId()+"로 "+chatMessageDto);
+>>>>>>> 3f740089c2cae5fb0e3b1c5de607d49d319774bc
     }
 }

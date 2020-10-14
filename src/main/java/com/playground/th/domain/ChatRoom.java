@@ -27,6 +27,9 @@ public class ChatRoom {
     @JsonIgnore
     private Set<ChatSession> sessions;
 
+    @JsonIgnore
+    @Transient
+    private Set<WebSocketSession> sessions = new HashSet<>();
 
     //생성 메서드
     public static ChatRoom create(String name) {
@@ -37,6 +40,7 @@ public class ChatRoom {
         return chatRoom;
     }
 
+<<<<<<< HEAD
 //    public void handleActions(WebSocketSession session, ChatMessageDto chatMessageDto, ChatService chatService) {
 //        if (chatMessageDto.getType().equals(MessageType.ENTER.toString())) {
 //            //세션 유무 검증
@@ -52,6 +56,19 @@ public class ChatRoom {
 //    public <T> void sendMessage(T message, ChatService chatService) {
 //        sessions.parallelStream().forEach(session -> chatService.sendMessage(session, message));
 //    }
+=======
+    public void handleActions(WebSocketSession session, ChatMessageDto chatMessageDto, ChatService chatService) {
+        if (chatMessageDto.getType().equals(MessageType.ENTER.toString())) {
+            sessions.add(session);
+            chatMessageDto.setMessage(chatMessageDto.getSender() + "님이 입장했습니다.");
+        }
+        sendMessage(chatMessageDto, chatService);
+    }
+
+    public <T> void sendMessage(T message, ChatService chatService) {
+        sessions.parallelStream().forEach(session -> chatService.sendMessage(session, message));
+    }
+>>>>>>> 3f740089c2cae5fb0e3b1c5de607d49d319774bc
 
 
 

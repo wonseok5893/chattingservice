@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 package com.playground.th.domain;
+=======
+
+/*package com.playground.th.domain;
+>>>>>>> 3f740089c2cae5fb0e3b1c5de607d49d319774bc
 
 import lombok.Getter;
 import lombok.Setter;
 
+<<<<<<< HEAD
 import javax.persistence.*;
 
 @Entity
@@ -29,3 +35,13 @@ public class ChatSession {
     }
 
 }
+=======
+import javax.persistence.Entity;
+
+@Entity
+@Getter @Setter
+public class ChatSession {
+    
+}
+*/
+>>>>>>> 3f740089c2cae5fb0e3b1c5de607d49d319774bc
