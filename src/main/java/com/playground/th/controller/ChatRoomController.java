@@ -1,5 +1,6 @@
 package com.playground.th.controller;
 
+import com.playground.th.controller.dto.ChatRoomDto;
 import com.playground.th.domain.ChatRoom;
 import com.playground.th.service.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ public class ChatRoomController {
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
     @ResponseBody
-    public List<ChatRoom> room() {
-        return chatService.findAllRoom();
+    public ChatRoomDto room() {
+        return new ChatRoomDto(1,chatService.findAllRoom());
     }
 
     // 채팅방 생성
@@ -34,6 +35,5 @@ public class ChatRoomController {
     public ChatRoom roomInfo(@PathVariable String roomId) {
         return chatService.findById(roomId);
     }
-
 
 }

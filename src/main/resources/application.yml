@@ -10,12 +10,17 @@ spring:
     secret: wonseok1234!
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         #show_sql: false
         format_sql: true
         default_batch_fetch_size: 100
+ # redis:
+ #   host: localhost
+ #   port: 6520
+ # session:
+ #   store-type: redis
 logging:
   level:
     org.hibernate.SQL: debug
