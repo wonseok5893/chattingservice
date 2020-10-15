@@ -28,25 +28,5 @@ public class ChatController {
         return chatService.findAllRoom();
     }
 
-    @MessageMapping("/chat/broad")
-    @SendTo("/sub/public")
-    public ChatMessageDto broadCast(ChatMessageDto chatMessageDto){
-        System.out.println("send");
-        return chatMessageDto;
-    }
 
-    @MessageMapping("/chat/message")
-    public void message(ChatMessageDto chatMessageDto, SimpMessageHeaderAccessor headerAccessor) {
-        System.out.println(chatMessageDto.getMessage());
-        System.out.println(chatMessageDto.getRoomId());
-        System.out.println(chatMessageDto.getSender());
-        System.out.println(MessageType.ENTER);
-        if (MessageType.ENTER.toString().equals(chatMessageDto.getType())) {
-            chatMessageDto.setMessage(chatMessageDto.getSender()+" 님이 입장하셨습니다.");
-        }
-        headerAccessor.getSessionAttributes().put("sender",chatMessageDto.getSender());
-        String text = "hello";
-        TextMessage message = new TextMessage(text);
-
-    }
 }

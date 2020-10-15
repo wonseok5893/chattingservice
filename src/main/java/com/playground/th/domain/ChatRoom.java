@@ -2,28 +2,27 @@ package com.playground.th.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.playground.th.controller.dto.ChatMessageDto;
-import com.playground.th.service.ChatService;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.socket.WebSocketSession;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter @Setter
 public class ChatRoom {
+
     @Id
+    @Column(name="chatroom_id")
     private String roomId;
     private String name;
+
+    @OneToOne(mappedBy = "chatRoom")
+    private Team group;
+
     @JsonIgnore
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-    private List<ChatMessage> chatMessages;
-
+    private List<ChatMessage> chatMessages = new ArrayList<>();
 
 
     //생성 메서드

@@ -34,7 +34,6 @@ public class WebSocketEventListener {
             logger.info("User Disconnected : " + username);
 
             ChatMessageDto chatMessageDto = new ChatMessageDto();
-            chatMessageDto.setType(String.valueOf(MessageType.LEAVE));
             chatMessageDto.setSender(username);
         }
     }

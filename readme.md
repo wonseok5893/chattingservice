@@ -15,6 +15,21 @@
 1. 채팅 서버 구축  (09/22) 
 2. Stomp/ jpa를 활용한 구현 (09/29)
 
+## URI
+회원가입
+    
+    METHOD : POST
+    URL : BaseUrl/member/join
+    header: 
+    body:  [1] String : email
+           [2] String : password
+           
+    response: {
+                  "result": 1,
+                  "message": "회원가입 성공"
+              }
+로그인
+
 ##refer
 - https://daddyprogrammer.org/post/4077/spring-websocket-chatting/?amp
 - https://bcho.tistory.com/1058

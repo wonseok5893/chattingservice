@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter @Setter
 public class ChatMessage {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="chatmessage_id")
     private Long id;
     @Enumerated(EnumType.STRING)
     private MessageType type;
