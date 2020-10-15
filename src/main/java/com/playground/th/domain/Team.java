@@ -22,7 +22,7 @@ public class Team {
     private ChatRoom chatRoom;
 
     private String name;
-    private String description;
+    private String content;
 
     @Embedded
     private Location location;
@@ -41,7 +41,7 @@ public class Team {
     ) {
         Team team = new Team();
         team.setName(name);
-        team.setDescription(description);
+        team.setContent(description);
         team.setLocation(new Location(city, street));
         team.setCategory(category);
         team.setMaxMemberCount(maxMemberCount);

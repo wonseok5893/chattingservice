@@ -67,6 +67,40 @@
                   }
               }
 
+모든 소모임방
+
+    METHOD : GET
+    URL : /all/teams
+    header: 
+    query:
+           
+    response: {
+                  "result": 1,
+                  "data": [
+                      {
+                          "name": "첫번째 소모임",
+                          "content": "7팀",
+                          "maxMemberCount": 5,
+                          "location": {
+                              "city": "서울시",
+                              "street": "노원구"
+                          },
+                          "category": "스터디"
+                      },
+                      {
+                          "name": "두번째 소모임",
+                          "content": "두번째 입니다",
+                          "maxMemberCount": 5,
+                          "location": {
+                              "city": "서울시",
+                              "street": "노원구"
+                          },
+                          "category": "스터디"
+                      }     
+                  ]
+              }
+
+
 ## refer
 - https://daddyprogrammer.org/post/4077/spring-websocket-chatting/?amp
 - https://bcho.tistory.com/1058
