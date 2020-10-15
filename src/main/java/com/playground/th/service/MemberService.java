@@ -31,4 +31,11 @@ public class MemberService {
         }
         return true;
     }
+
+    public boolean login(MemberDto memberDto) {
+        Member member = memberRepository.findByEmail(memberDto.getEmail());
+        if(memberDto.getPassword().equals(member.getPassword()))
+            return true;
+        return false;
+    }
 }

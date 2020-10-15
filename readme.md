@@ -19,7 +19,7 @@
 회원가입
     
     METHOD : POST
-    URL : BaseUrl/member/join
+    URL : /member/join
     header: 
     body:  [1] String : email
            [2] String : password
@@ -29,6 +29,17 @@
                   "message": "회원가입 성공"
               }
 로그인
+    
+    METHOD : POST
+    URL : /member/login
+    header: 
+    body:  [1] String : email
+           [2] String : password
+           
+    response: {
+                  "result": 1,
+                  "message": "로그인 성공"
+              }
 
 ##refer
 - https://daddyprogrammer.org/post/4077/spring-websocket-chatting/?amp

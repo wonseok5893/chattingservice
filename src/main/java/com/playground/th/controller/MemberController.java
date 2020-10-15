@@ -21,4 +21,11 @@ public class MemberController {
         else
             return new ResponseDto(0,"회원가입 실패");
     }
+    @PostMapping("/member/login")
+    public ResponseDto login(@RequestBody MemberDto memberDto) {
+        if(memberService.login(memberDto))
+            return new ResponseDto(1,"로그인 성공");
+        else
+            return new ResponseDto(0,"로그인 실패");
+    }
 }
