@@ -12,8 +12,10 @@ import java.util.*;
 @Getter @Setter
 public class ChatRoom {
 
-    @Id
+    @Id @GeneratedValue
     @Column(name="chatroom_id")
+    private Long id;
+
     private String roomId;
     private String name;
 

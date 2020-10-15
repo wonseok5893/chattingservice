@@ -1,4 +1,4 @@
-package com.playground.th.controller.dto;
+package com.playground.th.controller.dto.responseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

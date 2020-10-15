@@ -1,12 +1,11 @@
 package com.playground.th.controller;
 
 import com.playground.th.controller.dto.MemberDto;
-import com.playground.th.controller.dto.ResponseDto;
+import com.playground.th.controller.dto.responseDto.ResponseDto;
 import com.playground.th.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
