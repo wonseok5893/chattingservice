@@ -3,6 +3,8 @@ package com.playground.th.handler;
 import com.playground.th.Stomp;
 import com.playground.th.controller.dto.ChatMessageDto;
 import com.playground.th.domain.ChatMessage;
+import com.playground.th.repository.ChatRoomRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -13,6 +15,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+@RequiredArgsConstructor
 public class StompHandler {
     private Stomp stomp;
     private ChatMessageDto chatMessageDto;
@@ -34,7 +37,8 @@ public class StompHandler {
                     sessionFactory.put(roomId, sessions);
                     System.out.println("session size:" + sessionFactory.get(roomId).size());
                 } else sessionFactory.get(roomId).add(session);
-                TextMessage broadMessage = new TextMessage(chatMessageDto.getMessage());
+
+                TextMessage broadMessage = new TextMessage( messageToJson("ENTER",roomId,chatMessageDto.getSender(),chatMessageDto.getMessage()));
                 broadCast(roomId, broadMessage);
                 break;
             }
@@ -47,12 +51,12 @@ public class StompHandler {
                 }else if(sessionFactory.get(roomId).size()==0){
                     sessionFactory.remove(roomId);
                 }
-                TextMessage broadMessage = new TextMessage(chatMessageDto.getMessage());
+                TextMessage broadMessage = new TextMessage(messageToJson("LEAVE",roomId,chatMessageDto.getSender(),chatMessageDto.getMessage()));
                 broadCast(roomId, broadMessage);
                 break;
             }
             case "SEND":{
-                TextMessage broadMessage = new TextMessage(chatMessageDto.getMessage());
+                TextMessage broadMessage = new TextMessage(messageToJson("TALK",roomId,chatMessageDto.getSender(),chatMessageDto.getMessage()));
                 broadCast(roomId, broadMessage);
                 break;
             }
@@ -75,5 +79,10 @@ public class StompHandler {
         this.stomp = stomp;
         this.chatMessageDto = chatMessageDto;
         this.session = session;
+    }
+
+    public String messageToJson(String type, String roomId, String sender, String message){
+        String messageJson ="{\"type\":\""+type+"\",\"roomId\":\""+roomId+"\",\"sender\":\""+sender+"\",\"message\":\""+message+"\"}";
+        return messageJson;
     }
 }

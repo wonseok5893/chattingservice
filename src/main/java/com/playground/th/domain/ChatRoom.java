@@ -19,6 +19,7 @@ public class ChatRoom {
     private String roomId;
     private String name;
 
+
     @OneToOne(mappedBy = "chatRoom")
     private Team group;
 

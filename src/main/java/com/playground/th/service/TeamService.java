@@ -1,6 +1,7 @@
 package com.playground.th.service;
 
 import com.playground.th.controller.dto.TeamCreateForm;
+import com.playground.th.controller.dto.responseDto.ResponseFindRoomDto;
 import com.playground.th.controller.dto.responseDto.ResponseTeam;
 import com.playground.th.controller.dto.responseDto.ResponseTeamDto;
 import com.playground.th.domain.ChatRoom;
@@ -50,5 +51,12 @@ public class TeamService {
         List<ResponseTeam> responseTeams
                 = all.stream().map(o1->new ResponseTeam(o1)).collect(Collectors.toList());
         return responseTeams;
+    }
+
+
+    public ResponseFindRoomDto findRoom(Long teamId) {
+        Team team = teamRepository.findById(teamId).get();
+        String roomId = team.getChatRoom().getRoomId();
+        return new ResponseFindRoomDto(roomId,team);
     }
 }

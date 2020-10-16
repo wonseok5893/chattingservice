@@ -2,6 +2,7 @@ package com.playground.th;
 
 import com.playground.th.controller.dto.ChatMessageDto;
 import com.playground.th.domain.MessageType;
+import com.playground.th.handler.WebChatHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ public class WebSocketEventListener {
 
             ChatMessageDto chatMessageDto = new ChatMessageDto();
             chatMessageDto.setSender(username);
+
         }
     }
 }

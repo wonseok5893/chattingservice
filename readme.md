@@ -100,6 +100,37 @@
                   ]
               }
 
+소모임방 상세보기
+
+    METHOD : GET
+    URL : /team/{teamId}
+    header: 
+    query:
+           
+    response: {
+                  "roomId": "73788320-fe0f-414b-8b62-46f60e414ef2",
+                  "team": {
+                      "id": 1,
+                      "name": "첫번째 소모임",
+                      "content": "7팀",
+                      "location": {
+                          "street": "노원구",
+                          "city": "서울시"
+                      },
+                      "category": "스터디",
+                      "maxMemberCount": 5,
+                      "members": [
+                          {
+                              "id": 1,
+                              "email": "wonseok@naver.com",
+                              "student": null,
+                              "nickname": null,
+                              "sex": null
+                          }
+                      ]
+                  }
+              }
+
 
 ## refer
 - https://daddyprogrammer.org/post/4077/spring-websocket-chatting/?amp

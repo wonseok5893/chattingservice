@@ -1,5 +1,6 @@
 package com.playground.th.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,12 +17,16 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
     private String email;
+    @JsonIgnore
     private String password;
     @Embedded
     private Student student;
     private String nickname;
     private String sex;
+    @JsonIgnore
     private String token;
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "members")
     private Set<Team> groups = new HashSet<>();
 

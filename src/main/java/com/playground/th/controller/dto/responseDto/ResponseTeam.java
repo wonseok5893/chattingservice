@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class ResponseTeam {
+    private Long teamId;
     private String name;
     private String content;
     private int maxMemberCount;
@@ -13,6 +14,7 @@ public class ResponseTeam {
     private String category;
 
     public ResponseTeam(Team team){
+        teamId = team.getId();
         name = team.getName();
         content = team.getContent();
         maxMemberCount = team.getMaxMemberCount();
