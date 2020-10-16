@@ -1,6 +1,7 @@
 package com.playground.th.service;
 
 import com.playground.th.controller.dto.TeamCreateForm;
+import com.playground.th.controller.dto.responseDto.ResponseChatRoomDto;
 import com.playground.th.controller.dto.responseDto.ResponseFindRoomDto;
 import com.playground.th.controller.dto.responseDto.ResponseTeam;
 import com.playground.th.controller.dto.responseDto.ResponseTeamDto;
@@ -15,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -59,4 +62,5 @@ public class TeamService {
         String roomId = team.getChatRoom().getRoomId();
         return new ResponseFindRoomDto(roomId,team);
     }
+
 }

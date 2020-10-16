@@ -1,18 +1,19 @@
 package com.playground.th.controller;
 
 import com.playground.th.controller.dto.TeamCreateForm;
-import com.playground.th.controller.dto.responseDto.ResponseData;
-import com.playground.th.controller.dto.responseDto.ResponseFindRoomDto;
-import com.playground.th.controller.dto.responseDto.ResponseTeam;
-import com.playground.th.controller.dto.responseDto.ResponseTeamDto;
+import com.playground.th.controller.dto.responseDto.*;
 import com.playground.th.domain.ChatRoom;
+import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
 import com.playground.th.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -37,6 +38,8 @@ public class TeamController {
     public ResponseFindRoomDto findRoom(@PathVariable("teamId")Long teamId){
         return teamService.findRoom(teamId);
     }
+
+
 
 
 }

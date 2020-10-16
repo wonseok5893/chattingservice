@@ -2,6 +2,7 @@ package com.playground.th.controller;
 
 import com.playground.th.controller.dto.ChatRoomDto;
 import com.playground.th.domain.ChatRoom;
+import com.playground.th.domain.Team;
 import com.playground.th.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -35,5 +36,6 @@ public class ChatRoomController {
     public ChatRoom roomInfo(@PathVariable String roomId) {
         return chatService.findById(roomId);
     }
+
 
 }

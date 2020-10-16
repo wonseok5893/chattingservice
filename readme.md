@@ -131,6 +131,28 @@
                   }
               }
 
+모든 채팅방
+
+    METHOD : GET
+    URL : /chat/rooms
+    header: 
+    query:
+           
+    response: {
+                  "result": 1,
+                  "data": [
+                      {
+                          "name": "첫번째 소모임",
+                          "content": "7팀",
+                          "maxMemberCount": 5,
+                          "location": {
+                              "city": "서울시",
+                              "street": "노원구"
+                          },
+                          "category": "스터디"
+                      }
+                  ]
+              }
 
 ## refer
 - https://daddyprogrammer.org/post/4077/spring-websocket-chatting/?amp
