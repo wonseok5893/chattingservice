@@ -141,17 +141,24 @@
     response: {
                   "result": 1,
                   "data": [
-                      {
-                          "name": "첫번째 소모임",
-                          "content": "7팀",
-                          "maxMemberCount": 5,
-                          "location": {
-                              "city": "서울시",
-                              "street": "노원구"
-                          },
-                          "category": "스터디"
-                      }
-                  ]
+                                  {
+                                      "id": 8,
+                                      "roomId": "8339b308-5463-48f3-9817-f75261eb9777",
+                                      "name": "23",
+                                      "group": {
+                                          "id": 8,
+                                          "name": "23",
+                                          "content": "333",
+                                          "location": {
+                                              "street": "23",
+                                              "city": "2222"
+                                          },
+                                          "category": "123",
+                                          "maxMemberCount": 3334,
+                                          "members": []
+                                      }
+                                  }
+                                 ]
               }
 
 ## refer
