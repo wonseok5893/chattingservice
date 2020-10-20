@@ -161,6 +161,8 @@
                                  ]
               }
 
+## 걔획
+    - 11/01 파이널 시작
 ## refer
 - https://daddyprogrammer.org/post/4077/spring-websocket-chatting/?amp
 - https://bcho.tistory.com/1058
