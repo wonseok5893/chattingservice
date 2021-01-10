@@ -1,4 +1,4 @@
-package com.playground.th;
+package com.playground.th.websocket;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -11,12 +11,12 @@ import org.springframework.web.socket.config.annotation.*;
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
-    private final WebSocketHandler webSocketHandler;
+//    private final WebSocketHandler webSocketHandler;
 
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketHandler, "/ws/chat").setAllowedOrigins("*")
+        registry.addHandler(new MyHandler(), "/ws/chat").setAllowedOrigins("*")
         .withSockJS();
     }
 }

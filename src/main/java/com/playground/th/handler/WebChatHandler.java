@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.playground.th.Stomp;
 
-import com.playground.th.WebSocketEventListener;
 import com.playground.th.controller.dto.ChatMessageDto;
 
 import com.playground.th.service.ChatService;
