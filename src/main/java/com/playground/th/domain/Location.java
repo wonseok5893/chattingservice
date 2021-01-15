@@ -12,6 +12,6 @@ import javax.persistence.Embedded;
 @NoArgsConstructor
 @Getter
 public class Location {
-    private String CIty;
-    private String Street;
+    private String city;
+    private String street;
 }

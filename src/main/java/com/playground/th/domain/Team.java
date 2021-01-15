@@ -26,8 +26,7 @@ public class Team {
     private String name;
     private String content;
 
-    @Embedded
-    private Location location;
+    private String location;
     private String category;
     private int maxMemberCount;
 
@@ -38,13 +37,13 @@ public class Team {
 
     //생성 메서드
     public static Team createTeam(
-            String name, String description, String city, String street, String category
+            String name, String description, String location, String category
             ,int maxMemberCount
     ) {
         Team team = new Team();
         team.setName(name);
         team.setContent(description);
-        team.setLocation(new Location(city, street));
+        team.setLocation(location);
         team.setCategory(category);
         team.setMaxMemberCount(maxMemberCount);
         return team;

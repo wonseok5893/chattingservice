@@ -1,9 +1,12 @@
 package com.playground.th.controller;
 
+import com.playground.th.chat.Message;
 import com.playground.th.controller.dto.ChatMessageDto;
+import com.playground.th.controller.dto.responseDto.ResponseChatMessageDto;
 import com.playground.th.domain.ChatMessage;
 import com.playground.th.domain.ChatRoom;
 import com.playground.th.domain.MessageType;
+import com.playground.th.rabbitmq.Producer;
 import com.playground.th.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,12 +24,19 @@ import java.util.List;
 @Controller
 public class ChatController {
     private final ChatService chatService;
-
+    private final Producer producer;
     @GetMapping("/all/rooms")
     @ResponseBody
     public List<ChatRoom> findAllRoom() {
         return chatService.findAllRoom();
     }
 
+    // 채팅메시지 -> rabbitmq
+    @PostMapping("/chat/message")
+    @ResponseBody
+    public ResponseChatMessageDto sendChatMessage(@RequestBody Message message){
+        producer.sendToExchange(message);
+        return new ResponseChatMessageDto(1,"수신 확인");
+    }
 
 }

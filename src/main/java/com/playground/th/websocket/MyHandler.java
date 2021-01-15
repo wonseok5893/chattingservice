@@ -6,6 +6,8 @@ import com.playground.th.repository.ChatRoomRepository;
 import com.playground.th.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
@@ -15,10 +17,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+@Component
+@Transactional(readOnly = true)
 public class MyHandler extends TextWebSocketHandler {
-//    private final ChatService chatService;
+    private ChatService chatService;
     private List<WebSocketSession> users;
-    private Map<String, Object> userMap;
+    private Map<String,WebSocketSession> userMap;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public MyHandler() {
@@ -31,7 +36,18 @@ public class MyHandler extends TextWebSocketHandler {
         System.out.println("hello new Session!!");
         users.add(session);
     }
+    public void sendToRoom(String token, String userId,Message message) throws Exception {
+        if(userMap.get(token)!=null) {
+            WebSocketSession webSocketSession = (WebSocketSession) userMap.get(token);
+            //token -> id
+            message.setFrom(userId);
+            TextMessage textMessage = new TextMessage(message.parseToJson());
+            webSocketSession.sendMessage(textMessage);
+        }
+    }
+    public void sendToUser(String token, String userId,Message message){
 
+    }
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
         Message message1 = objectMapper.readValue((String) message.getPayload(), Message.class);

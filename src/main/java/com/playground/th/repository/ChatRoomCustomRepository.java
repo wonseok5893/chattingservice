@@ -15,4 +15,11 @@ public class ChatRoomCustomRepository {
         ChatRoom chatRoom = ChatRoom.create(name);
         return chatRoom;
     }
+    public ChatRoom finByRoomId(String roomId){
+        return em.createQuery("select m from ChatRoom m" +
+                        " where m.roomId = :roomId"
+                ,ChatRoom.class)
+                .setParameter("roomId",roomId).getSingleResult();
+    }
+
 }

@@ -12,6 +12,5 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Student {
     String university;
-    String major;
     String number;
 }

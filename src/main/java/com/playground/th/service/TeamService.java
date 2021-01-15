@@ -36,7 +36,7 @@ public class TeamService {
         Member member = memberRepository.findByEmail(teamDto.getToken());
         //팀 생성
         Team team = Team.createTeam(teamDto.getName(), teamDto.getContent()
-                , teamDto.getCity(), teamDto.getStreet(), teamDto.getCategory()
+                , teamDto.getLocation(), teamDto.getCategory()
         ,teamDto.getMaxMemberCount());
         //채팅방 생성
         ChatRoom chatRoom = ChatRoom.create(team.getName());
@@ -62,5 +62,7 @@ public class TeamService {
         String roomId = team.getChatRoom().getRoomId();
         return new ResponseFindRoomDto(roomId,team);
     }
+
+
 
 }

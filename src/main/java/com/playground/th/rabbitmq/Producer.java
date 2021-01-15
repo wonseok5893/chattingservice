@@ -1,7 +1,9 @@
-package com.playground.th.chat;
+package com.playground.th.rabbitmq;
 
+import com.playground.th.chat.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
@@ -15,20 +17,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 @Slf4j
-public class Producer implements ApplicationRunner {
+public class Producer  {
     private final RabbitTemplate rabbitTemplate;
-    private final ConnectionFactory connnectionFacyory;
 
-    public void sendToExchange(String roomId){
-
-        TopicExchange exchange = new TopicExchange("chat");
-        rabbitTemplate.convertAndSend("chat","group."+roomId+".*","HELLO first");
+    public void sendToExchange(Message message){
+        rabbitTemplate.convertAndSend("spring-boot","chat.message",message);
     }
 
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        Queue queue = new Queue("group.room1.1",false);
-        sendToExchange("room1");
-    }
 }

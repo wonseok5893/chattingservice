@@ -10,7 +10,7 @@ public class ResponseTeam {
     private String name;
     private String content;
     private int maxMemberCount;
-    private Location location;
+    private String location;
     private String category;
 
     public ResponseTeam(Team team){

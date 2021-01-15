@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,18 +19,25 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
     private String email;
+
     @JsonIgnore
     private String password;
     @Embedded
     private Student student;
     private String nickname;
     private String sex;
+    private Integer age;
+    private String hobby;
+    private String location;
     @JsonIgnore
     private String token;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "members")
     private Set<Team> groups = new HashSet<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<ImageFile> images = new ArrayList<>();
 
     //생성메서드
     public static Member create(String email, String password

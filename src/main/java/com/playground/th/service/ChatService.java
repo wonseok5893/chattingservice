@@ -2,8 +2,11 @@ package com.playground.th.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.playground.th.domain.ChatRoom;
+import com.playground.th.domain.Member;
+import com.playground.th.domain.Team;
 import com.playground.th.repository.ChatRoomCustomRepository;
 import com.playground.th.repository.ChatRoomRepository;
+import com.playground.th.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -44,5 +48,12 @@ public class ChatService {
         chatRoomRepository.save(room);
         return room;
     }
+    public Set<Member> findAllMembers(String roomUID){
+        ChatRoom chatRoom = chatRoomCustomRepository.finByRoomId(roomUID);
+        Team team = chatRoom.getGroup();
+        return team.getMembers();
+    }
+
+
 
 }
