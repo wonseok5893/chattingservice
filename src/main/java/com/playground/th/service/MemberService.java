@@ -2,17 +2,18 @@ package com.playground.th.service;
 
 import com.playground.th.controller.dto.MemberDto;
 import com.playground.th.controller.dto.responseDto.ResponseChatRoomDto;
-import com.playground.th.controller.dto.responseDto.ResponseTeam;
 import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
 import com.playground.th.repository.MemberRepository;
 import com.playground.th.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
-
+    private final BCryptPasswordEncoder passwordEncoder;
     @Transactional
     public Member join(MemberDto memberDto) {
         if (validateDuplicateMember(memberDto.getEmail())) {
@@ -35,23 +36,30 @@ public class MemberService {
 
     private boolean validateDuplicateMember(String email) {
         //Exception
-        Member existMember = memberRepository.findByEmail(email);
-        if (existMember != null) {
+        try {
+            Member existMember = memberRepository.findByEmail(email).get();
             return false;
+        }catch(NoSuchElementException e){
+            return true;
         }
-        return true;
     }
 
-    public boolean login(MemberDto memberDto) {
-        Member member = memberRepository.findByEmail(memberDto.getEmail());
-        if (memberDto.getPassword().equals(member.getPassword()))
-            return true;
-        return false;
+    public Member login(MemberDto memberDto) {
+        try {
+            Member member = memberRepository.findByEmail(memberDto.getEmail()).get();
+            System.out.println(member.getEmail());
+            if (passwordEncoder.matches(memberDto.getPassword(), member.getPassword()))
+                return member;
+        }catch(NoSuchElementException e) {
+            return null;
+        }
+        return null;
     }
 
 
     public List<ResponseChatRoomDto> findAllRooms(String token) {
-        Member member = memberRepository.findByEmail(token);
+
+        Member member = memberRepository.findByEmail(token).get();
         
         if (member.getGroups() != null) {
             Set<Team> groups = member.getGroups();

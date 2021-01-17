@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.playground.th.controller.dto.MemberDto;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -49,6 +50,10 @@ public class Member {
 
     private String studentCardImageUrl;
 
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     @PrePersist
     public void createdAt() {
         this.registeredDate = LocalDateTime.now();
@@ -65,6 +70,7 @@ public class Member {
         member.setNickname(memberDto.getNickname());
         Student student = new Student(memberDto.getUniversity(),memberDto.getStudentNumber());
         member.setStudent(student);
+        member.setRole(UserRole.ROLE_USER);
         member.setStudentCardImageUrl(memberDto.getStduentCardImageUrl());
         return member;
     }

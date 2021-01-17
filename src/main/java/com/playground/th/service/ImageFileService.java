@@ -27,12 +27,12 @@ public class ImageFileService {
     private final ImageFileRepository imageFileRepository;
 
     public String getStudentCardImageUrl(String email, String fileName){
-        return email+fileName;
+        return email+"_"+fileName;
     }
 
     public boolean saveStudentCard(Member member ,MultipartFile file) throws IOException {
         if(file.isEmpty())return false;
-        String fileName = member.getEmail()+file.getOriginalFilename();
+        String fileName = member.getEmail()+"_"+file.getOriginalFilename();
         String filePath = STUDENT_CARD_STORAGE_PATH+fileName;
         File newFile = new File(filePath);
         file.transferTo(newFile);
