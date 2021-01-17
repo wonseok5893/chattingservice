@@ -34,8 +34,8 @@ public class ChatService {
         return allRooms;
     }
 
-    public ChatRoom findById(String id) {
-        return chatRoomRepository.findById(id).get();
+    public ChatRoom findByRoomId(String id) {
+        return chatRoomCustomRepository.finByRoomId(id);
     }
 
     public ChatRoom findByName(String name) {

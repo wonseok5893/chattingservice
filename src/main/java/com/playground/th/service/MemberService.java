@@ -24,12 +24,13 @@ public class MemberService {
     private final TeamRepository teamRepository;
 
     @Transactional
-    public boolean join(MemberDto memberDto) {
-        Member newMember = Member.create(memberDto.getEmail(), memberDto.getPassword());
+    public Member join(MemberDto memberDto) {
         if (validateDuplicateMember(memberDto.getEmail())) {
-            memberRepository.save(newMember);
-        } else return false;
-        return true;
+            Member member = Member.create(memberDto);
+            Member savedMember = memberRepository.save(member);
+            return savedMember;
+        } else
+            return null;
     }
 
     private boolean validateDuplicateMember(String email) {

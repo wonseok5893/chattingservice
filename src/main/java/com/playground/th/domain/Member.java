@@ -1,10 +1,12 @@
 package com.playground.th.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.playground.th.controller.dto.MemberDto;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +34,12 @@ public class Member {
     @JsonIgnore
     private String token;
 
+    private LocalDateTime registeredDate;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "teamAdmin")
+    private Set<Team> myTeams = new HashSet<>();
+
     @JsonIgnore
     @ManyToMany(mappedBy = "members")
     private Set<Team> groups = new HashSet<>();
@@ -39,12 +47,25 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<ImageFile> images = new ArrayList<>();
 
+    private String studentCardImageUrl;
+
+    @PrePersist
+    public void createdAt() {
+        this.registeredDate = LocalDateTime.now();
+    }
+
     //생성메서드
-    public static Member create(String email, String password
-    ) {
+    public static Member create(MemberDto memberDto) {
         Member member = new Member();
-        member.setEmail(email);
-        member.setPassword(password);
+        member.setPassword(memberDto.getPassword());
+        member.setEmail(memberDto.getEmail());
+        member.setAge(memberDto.getAge());
+        member.setSex(memberDto.getSex());
+        member.setHobby(memberDto.getHobby());
+        member.setNickname(memberDto.getNickname());
+        Student student = new Student(memberDto.getUniversity(),memberDto.getStudentNumber());
+        member.setStudent(student);
+        member.setStudentCardImageUrl(memberDto.getStduentCardImageUrl());
         return member;
     }
 }

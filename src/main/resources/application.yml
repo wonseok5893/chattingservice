@@ -5,7 +5,12 @@ spring:
     port: 5672
     username: guest
     password: guest
-
+  servlet:
+    multipart:
+      file-size-threshold: 1MB
+      location: C:/Temp
+      max-file-size: 100MB
+      max-request-size: 100MB
   datasource:
     url:   jdbc:h2:tcp://localhost/~/chatt
     username: sa
@@ -15,7 +20,7 @@ spring:
     secret: wonseok1234!
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         #show_sql: false

@@ -34,3 +34,5 @@ out/
 .vscode/
 ##
 docker-compose.yml
+image
+student

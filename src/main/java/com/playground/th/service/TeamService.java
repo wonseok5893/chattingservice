@@ -37,7 +37,7 @@ public class TeamService {
         //팀 생성
         Team team = Team.createTeam(teamDto.getName(), teamDto.getContent()
                 , teamDto.getLocation(), teamDto.getCategory()
-        ,teamDto.getMaxMemberCount());
+        ,teamDto.getMaxMemberCount(),member);
         //채팅방 생성
         ChatRoom chatRoom = ChatRoom.create(team.getName());
         ChatRoom savedRoom = chatRoomRepository.save(chatRoom);
