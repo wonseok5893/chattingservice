@@ -29,6 +29,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String userEmail = token.getName();
         String userPw = (String) token.getCredentials();
         // UserDetailsService를 통해 DB에서 아이디로 사용자 조회
+
         MemberDetails memberDetails = (MemberDetails) memberDetailsService.loadUserByUsername(userEmail);
         if (!passwordEncoder.matches(userPw, memberDetails.getPassword())) {
             throw new BadCredentialsException(memberDetails.getUsername() + "Invalid password");

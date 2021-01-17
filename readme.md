@@ -21,7 +21,10 @@
 5. websocket을 활용한 websokcet 서버
 
 ## URI
-    
+    Get Token
+    /get/api/token or /member/login
+    - /get/api/token (토큰 갱신)
+     
 
 ## 걔획
     - [~1/23] 파이널 발표 / 시연 

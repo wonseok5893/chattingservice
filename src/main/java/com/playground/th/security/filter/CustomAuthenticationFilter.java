@@ -1,6 +1,7 @@
 package com.playground.th.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.playground.th.controller.dto.MemberDto;
 import com.playground.th.domain.Member;
 import com.playground.th.security.exception.InputNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,12 +22,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authRequest;
         try{
-            Member member = new ObjectMapper().readValue(request.getInputStream(), Member.class);
-            authRequest = new UsernamePasswordAuthenticationToken(member.getEmail(), member.getPassword());
+            MemberDto memberDto = new ObjectMapper().readValue(request.getInputStream(), MemberDto.class);
+            authRequest = new UsernamePasswordAuthenticationToken(memberDto.getEmail(), memberDto.getPassword());
         } catch (IOException exception){
             throw new InputNotFoundException();
         }
         setDetails(request, authRequest);
+
         return this.getAuthenticationManager().authenticate(authRequest);
     }
 }
