@@ -47,7 +47,6 @@ public class MemberService {
     public Member login(MemberDto memberDto) {
         try {
             Member member = memberRepository.findByEmail(memberDto.getEmail()).get();
-            System.out.println(member.getEmail());
             if (passwordEncoder.matches(memberDto.getPassword(), member.getPassword()))
                 return member;
         }catch(NoSuchElementException e) {

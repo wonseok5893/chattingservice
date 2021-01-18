@@ -21,6 +21,6 @@ public class MemberDto {
     private String studentNumber;
     private String hobby;
     private String location;
-    private String stduentCardImageUrl;
+    private String studentCardImageUrl;
 
 }

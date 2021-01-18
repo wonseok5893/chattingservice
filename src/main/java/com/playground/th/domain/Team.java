@@ -1,6 +1,7 @@
 package com.playground.th.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.playground.th.exception.NotEnoughMemberSize;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,12 +30,14 @@ public class Team {
 
     private String location;
     private String category;
+    private int currentMemberCount;
     private int maxMemberCount;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_admin_id")
     private Member teamAdmin;
+
     private LocalDateTime createdTime;
 
     @ManyToMany
@@ -50,7 +53,7 @@ public class Team {
     //생성 메서드
     public static Team createTeam(
             String name, String description, String location, String category
-            ,int maxMemberCount, Member teamAdmin
+            ,int maxMemberCount, Member teamAdmin, ChatRoom chatRoom
     ) {
         Team team = new Team();
         team.setName(name);
@@ -59,11 +62,15 @@ public class Team {
         team.setCategory(category);
         team.setMaxMemberCount(maxMemberCount);
         team.setTeamAdmin(teamAdmin);
+        team.setChatRoom(chatRoom);
         return team;
     }
     // 회원 추가
-    public Member addMember(Member member){
-        return null;
+    public Member addMember(Member member) throws Exception{
+        if(maxMemberCount>=currentMemberCount)throw new NotEnoughMemberSize(this.name);
+        members.add(member);
+        currentMemberCount++;
+        return member;
     }
 
 }

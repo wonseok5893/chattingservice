@@ -11,10 +11,7 @@ import javax.persistence.EntityManager;
 public class ChatRoomCustomRepository {
     private final EntityManager em;
 
-    public ChatRoom createRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.create(name);
-        return chatRoom;
-    }
+
     public ChatRoom finByRoomId(String roomId){
         return em.createQuery("select m from ChatRoom m" +
                         " where m.roomId = :roomId"

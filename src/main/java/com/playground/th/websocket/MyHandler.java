@@ -2,6 +2,7 @@ package com.playground.th.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.playground.th.chat.Message;
+import com.playground.th.domain.Member;
 import com.playground.th.repository.ChatRoomRepository;
 import com.playground.th.service.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +20,13 @@ import java.util.Map;
 
 
 @Component
-@Transactional(readOnly = true)
 public class MyHandler extends TextWebSocketHandler {
     private ChatService chatService;
-    private List<WebSocketSession> users;
-    private Map<String,WebSocketSession> userMap;
+    private static List<WebSocketSession> users;
+    private static Map<String,WebSocketSession> userMap;
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public MyHandler() {
+    protected MyHandler() {
         users = new ArrayList<>();
         userMap = new HashMap<>();
     }
@@ -36,50 +36,35 @@ public class MyHandler extends TextWebSocketHandler {
         System.out.println("hello new Session!!");
         users.add(session);
     }
-    public void sendToRoom(String token, String userId,Message message) throws Exception {
-        if(userMap.get(token)!=null) {
-            WebSocketSession webSocketSession = (WebSocketSession) userMap.get(token);
-            //token -> id
-            message.setFrom(userId);
+    public void sendToMemberByEmail(String email, Message message) throws Exception {
+        if(userMap.get(email)!=null) {
+            System.out.println(message.getText());
+            WebSocketSession webSocketSession = (WebSocketSession) userMap.get(email);
             TextMessage textMessage = new TextMessage(message.parseToJson());
             webSocketSession.sendMessage(textMessage);
         }
     }
-    public void sendToUser(String token, String userId,Message message){
+    public void convertByHeader(Message message){
+        switch(message.getType()){
+            case "ENTER":{
+                message.setText(message.getFrom()+"님이 입장하셨습니다,");
+                break;
+            }
+            case "LEFT":{
+                message.setText(message.getFrom()+"님이 나가셨습니다,");
+            }
+        }
+    }
+    public void sendToUser(Message message){
 
     }
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        Message message1 = objectMapper.readValue((String) message.getPayload(), Message.class);
 
-        //메시지 파싱
-        if (message1.getType().equals("ENTER")) {
+        Message message1 = objectMapper.readValue((String)message.getPayload(), Message.class);
+        if(message1.getType().equals("CONNECT")){
             userMap.put(message1.getFrom(), session);
-            // 채팅방 조회 멤버들
-            // id -> session
-            ArrayList<WebSocketSession> lists = new ArrayList<>();
-            TextMessage textMessage = new TextMessage(message1.getFrom()+"님이 입장하셨습니다");
-//            lists.parallelStream().forEach((se)-> {
-//                try {
-//                    se.sendMessage(textMessage);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//            userMap.get(message.ge)
-            session.sendMessage(textMessage);
-
-        } else if (message1.getType().equals("DUT")) {
-
-        } else if (message1.getType().equals("SEND")) {
-            WebSocketSession ws = (WebSocketSession) userMap.get(message1.getTo());
-            TextMessage textMessage = new TextMessage(message1.getText());
-            ws.sendMessage(textMessage);
         }
-        // id 검증
-        // 채팅방 사람들에게 모두 채팅메시지 보냄
-
-
     }
 
     @Override

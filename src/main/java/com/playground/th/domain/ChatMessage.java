@@ -2,6 +2,7 @@ package com.playground.th.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,5 +20,6 @@ public class ChatMessage {
     private ChatRoom chatRoom;
     private String sender;
     private String message;
+    @CreatedDate
     private LocalDateTime sendTime;
 }

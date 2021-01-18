@@ -32,7 +32,7 @@ public class MemberController {
         //회원가입 요청
         //학생증 사진 정보 임시 저장
         String studentCardImageUrl = imageFileService.getStudentCardImageUrl(memberDto.getEmail(),file.getOriginalFilename());
-        memberDto.setStduentCardImageUrl(studentCardImageUrl);
+        memberDto.setStudentCardImageUrl(studentCardImageUrl);
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         Member newMember = memberService.join(memberDto);
         //실패시

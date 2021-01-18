@@ -6,6 +6,7 @@ import com.playground.th.domain.ChatRoom;
 import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
 import com.playground.th.service.TeamService;
+import com.playground.th.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,10 @@ public class TeamController {
 
     // 소모임 생성 -> 채팅방 생성
     @PostMapping("/add/team")
-    public ResponseTeamDto createTeam(@RequestBody TeamCreateForm teamDto) {
+    public ResponseTeamDto createTeam(@RequestHeader("Authorization")String tokenHeader, @RequestBody TeamCreateForm teamDto) {
+        String token = JwtUtil.getTokenFromHeader(tokenHeader);
+        String email = JwtUtil.getUserEmailFromToken(token);
+        teamDto.setEmail(email);
         return teamService.createTeam(teamDto);
     }
 

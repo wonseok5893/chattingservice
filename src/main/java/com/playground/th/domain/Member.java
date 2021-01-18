@@ -46,6 +46,10 @@ public class Member implements Serializable {
     @ManyToMany(mappedBy = "members")
     private Set<Team> groups = new HashSet<>();
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "joinMembers")
+    private Set<ChatRoom> chatRooms = new HashSet<>();
+
     @OneToMany(mappedBy = "member")
     private List<ImageFile> images = new ArrayList<>();
 
@@ -72,7 +76,7 @@ public class Member implements Serializable {
         Student student = new Student(memberDto.getUniversity(),memberDto.getStudentNumber());
         member.setStudent(student);
         member.setRole(UserRole.ROLE_USER);
-        member.setStudentCardImageUrl(memberDto.getStduentCardImageUrl());
+        member.setStudentCardImageUrl(memberDto.getStudentCardImageUrl());
         return member;
     }
 }

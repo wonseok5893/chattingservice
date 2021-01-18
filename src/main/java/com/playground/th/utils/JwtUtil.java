@@ -36,6 +36,7 @@ public class JwtUtil {
             log.info("expireTime :" + claims.getExpiration());
             log.info("email :" + claims.get("email"));
             log.info("role :" + claims.get("role"));
+            log.info("nickname :"+ claims.get("nickname"));
             return true;
 
         } catch (ExpiredJwtException exception) {
@@ -77,6 +78,7 @@ public class JwtUtil {
 
         claims.put("email", member.getEmail());
         claims.put("role", member.getRole());
+        claims.put("nickname", member.getNickname());
 
         return claims;
     }
@@ -94,6 +96,11 @@ public class JwtUtil {
     public static String getUserEmailFromToken(String token) {
         Claims claims = getClaimsFormToken(token);
         return (String) claims.get("email");
+    }
+
+    public static String getUserNicknameFromToken(String token) {
+        Claims claims = getClaimsFormToken(token);
+        return (String) claims.get("nickname");
     }
 
     private static UserRole getRoleFromToken(String token) {

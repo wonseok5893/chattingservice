@@ -11,6 +11,7 @@ import com.playground.th.repository.ChatRoomRepository;
 import com.playground.th.repository.MemberRepository;
 import com.playground.th.repository.TeamCustomRepsitory;
 import com.playground.th.repository.TeamRepository;
+import com.playground.th.security.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,13 +31,16 @@ public class TeamService {
     @Transactional
     public ResponseTeamDto createTeam(TeamCreateForm teamDto) {
         //멤버 조회
-        Member member = memberRepository.findByEmail(teamDto.getToken()).get();
+        Member member = memberRepository.findByEmail(teamDto.getEmail()).orElseThrow(()->new UserNotFoundException(teamDto.getEmail()));
+        //채팅방 생성
+        ChatRoom chatRoom = ChatRoom.groupCreate(teamDto.getName());
         //팀 생성
         Team team = Team.createTeam(teamDto.getName(), teamDto.getContent()
                 , teamDto.getLocation(), teamDto.getCategory()
-        ,teamDto.getMaxMemberCount(),member);
+        ,teamDto.getMaxMemberCount(),member,chatRoom);
+        //검증
+
         //채팅방 생성
-        ChatRoom chatRoom = ChatRoom.create(team.getName());
         ChatRoom savedRoom = chatRoomRepository.save(chatRoom);
 
         team.setChatRoom(chatRoom);

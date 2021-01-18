@@ -44,14 +44,13 @@ public class ChatService {
 
     @Transactional
     public ChatRoom createChatRoom(String name) {
-        ChatRoom room = chatRoomCustomRepository.createRoom(name);
+        ChatRoom room = ChatRoom.groupCreate(name);
         chatRoomRepository.save(room);
         return room;
     }
     public Set<Member> findAllMembers(String roomUID){
         ChatRoom chatRoom = chatRoomCustomRepository.finByRoomId(roomUID);
-        Team team = chatRoom.getGroup();
-        return team.getMembers();
+        return chatRoom.getJoinMembers();
     }
 
 
