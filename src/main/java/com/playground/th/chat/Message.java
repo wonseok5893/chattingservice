@@ -14,6 +14,7 @@ public class Message {
     private String from; //user token <- string user_id 로 사용
     private String to; //
     private String text;
+    private Long sendTime;
 
     public String parseToJson() {
         return "{\"aria\":\""+aria+"\",\"type\":\""+type+"\", \"from\":\""+from+"\", \"to\":\""+to+"\", \"text\":\""+text+"\"}";

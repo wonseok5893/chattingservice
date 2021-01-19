@@ -26,6 +26,7 @@ import java.util.List;
 public class ChatController {
     private final ChatService chatService;
     private final Producer producer;
+
     @GetMapping("/all/rooms")
     @ResponseBody
     public List<ChatRoom> findAllRoom() {
@@ -44,6 +45,8 @@ public class ChatController {
         producer.sendToExchange(message);
         return new ResponseChatMessageDto(1,"수신 확인");
     }
+
+
 
 
 }

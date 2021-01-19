@@ -42,12 +42,7 @@ public class ChatService {
         return chatRoomRepository.findByName(name);
     }
 
-    @Transactional
-    public ChatRoom createChatRoom(String name) {
-        ChatRoom room = ChatRoom.groupCreate(name);
-        chatRoomRepository.save(room);
-        return room;
-    }
+
     public Set<Member> findAllMembers(String roomUID){
         ChatRoom chatRoom = chatRoomCustomRepository.finByRoomId(roomUID);
         return chatRoom.getJoinMembers();

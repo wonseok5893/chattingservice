@@ -24,12 +24,21 @@ public class ImageFileService {
     public static final String BASE_STORAGE_PATH = "C:\\Users\\wonseok\\Desktop\\7th1\\7th\\7th\\src\\main\\resources\\static\\image\\";
     public static final String ACCESS_FILE_PATH = "/upload/image/";
     public static final String STUDENT_CARD_STORAGE_PATH = "C:\\Users\\wonseok\\Desktop\\7th1\\7th\\7th\\src\\main\\resources\\static\\student\\";
+    public static final String TEAM_IMAGE_STORAGE_PATH = "C:\\Users\\wonseok\\Desktop\\7th1\\7th\\7th\\src\\main\\resources\\static\\image\\";
+
     private final ImageFileRepository imageFileRepository;
 
     public String getStudentCardImageUrl(String email, String fileName){
         return email+"_"+fileName;
     }
-
+    public boolean saveTeamImage(MultipartFile file) throws IOException {
+        if(file.isEmpty())return false;
+        String fileName = file.getOriginalFilename();
+        String filePath = TEAM_IMAGE_STORAGE_PATH+fileName;
+        File newFile = new File(filePath);
+        file.transferTo(newFile);
+        return true;
+    }
     public boolean saveStudentCard(Member member ,MultipartFile file) throws IOException {
         if(file.isEmpty())return false;
         String fileName = member.getEmail()+"_"+file.getOriginalFilename();

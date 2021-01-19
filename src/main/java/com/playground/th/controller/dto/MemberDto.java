@@ -16,7 +16,7 @@ public class MemberDto {
     private String password;
     private String nickname;
     private String sex;
-    private int age;
+    private Integer age;
     private String university;
     private String studentNumber;
     private String hobby;

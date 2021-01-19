@@ -38,7 +38,7 @@ public class MyHandler extends TextWebSocketHandler {
     }
     public void sendToMemberByEmail(String email, Message message) throws Exception {
         if(userMap.get(email)!=null) {
-            System.out.println(message.getText());
+            convertByHeader(message);
             WebSocketSession webSocketSession = (WebSocketSession) userMap.get(email);
             TextMessage textMessage = new TextMessage(message.parseToJson());
             webSocketSession.sendMessage(textMessage);

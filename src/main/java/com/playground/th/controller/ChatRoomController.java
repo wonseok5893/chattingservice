@@ -16,19 +16,6 @@ import java.util.List;
 public class ChatRoomController {
     private final ChatService chatService;
 
-    // 모든 채팅방 목록 반환
-    @GetMapping("/rooms")
-    @ResponseBody
-    public ChatRoomDto room() {
-        return new ChatRoomDto(1,chatService.findAllRoom());
-    }
-
-    // 채팅방 생성
-    @PostMapping("/room")
-    @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name) {
-        return chatService.createChatRoom(name);
-    }
 
     // 특정 채팅방 조회
     @GetMapping("/room/{roomId}")

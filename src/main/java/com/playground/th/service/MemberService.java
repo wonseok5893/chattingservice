@@ -1,9 +1,12 @@
 package com.playground.th.service;
 
 import com.playground.th.controller.dto.MemberDto;
+import com.playground.th.controller.dto.ResponseMyProfileDto;
 import com.playground.th.controller.dto.responseDto.ResponseChatRoomDto;
+import com.playground.th.domain.ImageFile;
 import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
+import com.playground.th.repository.MemberCustomRepository;
 import com.playground.th.repository.MemberRepository;
 import com.playground.th.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final MemberCustomRepository memberCustomRepository;
     private final TeamRepository teamRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     @Transactional
@@ -56,15 +60,18 @@ public class MemberService {
     }
 
 
-    public List<ResponseChatRoomDto> findAllRooms(String token) {
+    public Set<Team> findAllRooms(String token) {
 
         Member member = memberRepository.findByEmail(token).get();
-        
-        if (member.getGroups() != null) {
-            Set<Team> groups = member.getGroups();
-            return groups.stream().map(o1 -> new ResponseChatRoomDto(o1)).collect(Collectors.toList());
-        }
-        return new ArrayList<>();
 
+        return member.getGroups();
+
+    }
+
+    public ResponseMyProfileDto findByEmailToProfile(String userEmail) {
+        Member member = memberRepository.findByEmail(userEmail).get();
+        Set<Team> myTeams = member.getMyTeams();
+        List<ImageFile> images = member.getImages();
+        return new ResponseMyProfileDto(member,myTeams,images);
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -33,11 +34,11 @@ public class TeamService {
         //멤버 조회
         Member member = memberRepository.findByEmail(teamDto.getEmail()).orElseThrow(()->new UserNotFoundException(teamDto.getEmail()));
         //채팅방 생성
-        ChatRoom chatRoom = ChatRoom.groupCreate(teamDto.getName());
+        ChatRoom chatRoom = ChatRoom.groupCreate(teamDto.getName(),teamDto.getMaxMemberCount(),member);
         //팀 생성
         Team team = Team.createTeam(teamDto.getName(), teamDto.getContent()
                 , teamDto.getLocation(), teamDto.getCategory()
-        ,teamDto.getMaxMemberCount(),member,chatRoom);
+        ,teamDto.getMaxMemberCount(),teamDto.getTeamImageUrl(),teamDto.getStartDate(),teamDto.getEndDate(),member,chatRoom);
         //검증
 
         //채팅방 생성
@@ -64,6 +65,17 @@ public class TeamService {
         return new ResponseFindRoomDto(roomId,team);
     }
 
+    @Transactional
+    public boolean addMember(String email,Long teamId) throws Exception {
+        Member member = memberRepository.findByEmail(email).get();
+        if(member==null) throw new UserNotFoundException(email + "인 사용자가 없습니다");
+        Team team = teamRepository.findById(teamId).get();
+        team.addMember(member);
+        return true;
+    }
 
-
+    public Member findTeamAdmin(String to) {
+        Team team = teamCustomRepsitory.findByIdToMember(to);
+        return team.getTeamAdmin();
+    }
 }

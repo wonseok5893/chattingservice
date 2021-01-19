@@ -33,6 +33,10 @@ public class Team {
     private int currentMemberCount;
     private int maxMemberCount;
 
+    private String teamImageUrl;
+    private String startDate;
+    private String endDate;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_admin_id")
@@ -53,7 +57,7 @@ public class Team {
     //생성 메서드
     public static Team createTeam(
             String name, String description, String location, String category
-            ,int maxMemberCount, Member teamAdmin, ChatRoom chatRoom
+            ,int maxMemberCount,String teamImageUrl,String startDate,String endDate, Member teamAdmin, ChatRoom chatRoom
     ) {
         Team team = new Team();
         team.setName(name);
@@ -61,6 +65,10 @@ public class Team {
         team.setLocation(location);
         team.setCategory(category);
         team.setMaxMemberCount(maxMemberCount);
+        team.setCurrentMemberCount(1);
+        team.setTeamImageUrl(teamImageUrl);
+        team.setStartDate(startDate);
+        team.setEndDate(endDate);
         team.setTeamAdmin(teamAdmin);
         team.setChatRoom(chatRoom);
         return team;
@@ -69,6 +77,7 @@ public class Team {
     public Member addMember(Member member) throws Exception{
         if(maxMemberCount>=currentMemberCount)throw new NotEnoughMemberSize(this.name);
         members.add(member);
+        chatRoom.addMember(member);
         currentMemberCount++;
         return member;
     }

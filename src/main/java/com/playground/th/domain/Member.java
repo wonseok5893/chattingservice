@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Member implements Serializable {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -73,6 +73,7 @@ public class Member implements Serializable {
         member.setSex(memberDto.getSex());
         member.setHobby(memberDto.getHobby());
         member.setNickname(memberDto.getNickname());
+        member.setLocation(memberDto.getLocation());
         Student student = new Student(memberDto.getUniversity(),memberDto.getStudentNumber());
         member.setStudent(student);
         member.setRole(UserRole.ROLE_USER);
