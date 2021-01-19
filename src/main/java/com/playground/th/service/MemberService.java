@@ -1,23 +1,22 @@
 package com.playground.th.service;
 
 import com.playground.th.controller.dto.MemberDto;
-import com.playground.th.controller.dto.ResponseMyProfileDto;
-import com.playground.th.controller.dto.responseDto.ResponseChatRoomDto;
+import com.playground.th.controller.dto.responseDto.ResponseData;
 import com.playground.th.controller.dto.responseDto.ResponseDto;
-import com.playground.th.domain.ImageFile;
+import com.playground.th.controller.dto.responseDto.member.ResponseMemberMyInfo;
+import com.playground.th.controller.dto.responseDto.member.ResponseMyTeamInfo;
 import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
+import com.playground.th.exception.TokenNotExistException;
 import com.playground.th.repository.MemberCustomRepository;
 import com.playground.th.repository.MemberRepository;
 import com.playground.th.repository.TeamRepository;
 import com.playground.th.security.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -31,6 +30,7 @@ public class MemberService {
     private final MemberCustomRepository memberCustomRepository;
     private final TeamRepository teamRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+
     @Transactional
     public Member join(MemberDto memberDto) {
         if (validateDuplicateMember(memberDto.getEmail())) {
@@ -46,24 +46,27 @@ public class MemberService {
         try {
             Member existMember = memberRepository.findByEmail(email).get();
             return false;
-        }catch(NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return true;
         }
     }
+
     @Transactional
-    public Member login(MemberDto memberDto) {
-        try {
-            Member member = memberRepository.findByEmail(memberDto.getEmail()).get();
-            if (passwordEncoder.matches(memberDto.getPassword(), member.getPassword())) {
-                if(!member.getToken().equals(memberDto.getFcmToken())||member.getToken()==null){
+    public Member login(MemberDto memberDto) throws RuntimeException {
+        Member member = memberRepository.findByEmail(memberDto.getEmail()).get();
+        if (passwordEncoder.matches(memberDto.getPassword(), member.getPassword())) {
+            if (memberDto.getFcmToken() != null) {
+                if (member.getToken() == null) {
                     member.setToken(memberDto.getFcmToken());
+                } else {
+                    if (!member.getToken().equals(memberDto.getFcmToken())) {
+                        member.setToken(memberDto.getFcmToken());
+
+                    }
                 }
-                return member;
             }
-        }catch(NoSuchElementException e) {
-            return null;
         }
-        return null;
+        return member;
     }
 
 
@@ -75,22 +78,27 @@ public class MemberService {
 
     }
 
-    public Member findByEmailToProfile(String userEmail) {
-        Member member = memberRepository.findByEmail(userEmail).get();
-        return member;
-    }
     @Transactional
-    public ResponseDto loginAgain(String userEmail, String fcmToken) {
+    public ResponseDto loginAgain(String userEmail, String fcmToken) throws RuntimeException {
         try {
-            Member member = memberRepository.findByEmail(userEmail).get();
-            if(member==null)throw new UserNotFoundException(userEmail);
-            if (!member.getToken().equals(fcmToken)||member.getToken()==null) {
+            Member member = memberRepository.findByEmail(userEmail).orElseThrow(() -> new UserNotFoundException(userEmail));
+            if (fcmToken == null) throw new TokenNotExistException();
+            if (!member.getToken().equals(fcmToken) || member.getToken() == null) {
                 member.setToken(fcmToken);
             }
             return new ResponseDto(1, "자동 로그인 성공");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseDto(0,"로그인 실패");
+            return new ResponseDto(0, "로그인 실패");
         }
+    }
+
+    public ResponseMemberMyInfo findMyInfo(String userEmail) {
+
+        Member member = memberRepository.findByEmail(userEmail).orElseThrow(() -> new UserNotFoundException(userEmail));
+        List<ResponseMyTeamInfo> teams = member.getMyTeams().stream().map((team) -> new ResponseMyTeamInfo(team)).collect(Collectors.toList());
+        List<String> images = member.getImages().stream().map((image) -> image.getFileUrl()).collect(Collectors.toList());
+        return new ResponseMemberMyInfo(member, images, teams);
+
     }
 }

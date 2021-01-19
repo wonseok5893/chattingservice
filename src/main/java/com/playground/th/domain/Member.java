@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.playground.th.controller.dto.MemberDto;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
@@ -24,6 +25,8 @@ public class Member {
     private Long id;
     private String email;
 
+
+    private String introduction;
     @JsonIgnore
     private String password;
     @Embedded
@@ -71,6 +74,7 @@ public class Member {
         member.setEmail(memberDto.getEmail());
         member.setAge(memberDto.getAge());
         member.setSex(memberDto.getSex());
+        member.setIntroduction("안녕하세요. "+memberDto.getNickname()+"입니다.");
         member.setHobby(memberDto.getHobby());
         member.setNickname(memberDto.getNickname());
         member.setLocation(memberDto.getLocation());

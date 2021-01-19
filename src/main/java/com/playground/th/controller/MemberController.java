@@ -2,7 +2,9 @@ package com.playground.th.controller;
 
 import com.playground.th.controller.dto.MemberDto;
 import com.playground.th.controller.dto.ResponseLoginSuccessDto;
+import com.playground.th.controller.dto.responseDto.ResponseData;
 import com.playground.th.controller.dto.responseDto.ResponseDto;
+import com.playground.th.controller.dto.responseDto.member.ResponseMemberMyInfo;
 import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
 import com.playground.th.service.ImageFileService;
@@ -61,17 +63,18 @@ public class MemberController {
         return memberService.findAllMyTeams(userEmail);
     }
 
-    @PostMapping("/my/profile")
-    public Member myProfile(@RequestHeader("Authorization")String tokenHeader){
-        String token = JwtUtil.getTokenFromHeader(tokenHeader);
-        String userEmail = JwtUtil.getUserEmailFromToken(token);
-        return memberService.findByEmailToProfile(userEmail);
-    }
-
     @PostMapping("/member/login/again")
-    public ResponseDto againLogin(@RequestHeader("Authorization") String tokenHeader, String fcmToken){
+    public ResponseDto againLogin(@RequestHeader("Authorization") String tokenHeader, @RequestBody String fcmToken){
         String token = JwtUtil.getTokenFromHeader(tokenHeader);
         String userEmail = JwtUtil.getUserEmailFromToken(token);
         return memberService.loginAgain(userEmail,fcmToken);
+    }
+
+    @PostMapping("/my/info")
+    public ResponseData<ResponseMemberMyInfo> getMyInfo(@RequestHeader("Authorization") String tokenHeader, String fcmToken) {
+        String token = JwtUtil.getTokenFromHeader(tokenHeader);
+        String userEmail = JwtUtil.getUserEmailFromToken(token);
+        ResponseMemberMyInfo myInfo = memberService.findMyInfo(userEmail);
+        return new ResponseData<>(1,myInfo);
     }
 }
