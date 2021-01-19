@@ -10,6 +10,7 @@ import com.playground.th.repository.MemberCustomRepository;
 import com.playground.th.repository.MemberRepository;
 import com.playground.th.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,18 +61,16 @@ public class MemberService {
     }
 
 
-    public Set<Team> findAllRooms(String token) {
+    public Set<Team> findAllMyTeams(String email) {
 
-        Member member = memberRepository.findByEmail(token).get();
+        Member member = memberRepository.findByEmail(email).get();
 
         return member.getGroups();
 
     }
 
-    public ResponseMyProfileDto findByEmailToProfile(String userEmail) {
+    public Member findByEmailToProfile(String userEmail) {
         Member member = memberRepository.findByEmail(userEmail).get();
-        Set<Team> myTeams = member.getMyTeams();
-        List<ImageFile> images = member.getImages();
-        return new ResponseMyProfileDto(member,myTeams,images);
+        return member;
     }
 }

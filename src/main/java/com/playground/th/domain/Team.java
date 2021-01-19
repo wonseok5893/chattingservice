@@ -1,6 +1,7 @@
 package com.playground.th.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.playground.th.exception.ExistMemberInTeam;
 import com.playground.th.exception.NotEnoughMemberSize;
 import lombok.Getter;
 import lombok.Setter;
@@ -74,12 +75,17 @@ public class Team {
         return team;
     }
     // 회원 추가
-    public Member addMember(Member member) throws Exception{
-        if(maxMemberCount>=currentMemberCount)throw new NotEnoughMemberSize(this.name);
-        members.add(member);
-        chatRoom.addMember(member);
-        currentMemberCount++;
-        return member;
+    public boolean addMember(Member member) throws Exception{
+        try {
+            if(members.contains(member)) throw new ExistMemberInTeam(member.getEmail());
+            if (maxMemberCount <= currentMemberCount) throw new NotEnoughMemberSize(this.name);
+            members.add(member);
+            currentMemberCount++;
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

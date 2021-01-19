@@ -28,6 +28,7 @@
 
 ## 걔획
     - [~1/23] 파이널 발표 / 시연 
+    - 쿼리 성능 튜닝 ( EnitiyGraph , jpql , queryDsl) 해야함.
 ## refer
 - https://daddyprogrammer.org/post/4077/spring-websocket-chatting/?amp
 - https://bcho.tistory.com/1058

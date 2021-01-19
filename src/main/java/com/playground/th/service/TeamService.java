@@ -7,6 +7,7 @@ import com.playground.th.controller.dto.responseDto.ResponseTeamDto;
 import com.playground.th.domain.ChatRoom;
 import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
+import com.playground.th.exception.TeamNotFoundException;
 import com.playground.th.repository.ChatRoomRepository;
 import com.playground.th.repository.MemberRepository;
 import com.playground.th.repository.TeamCustomRepsitory;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -67,15 +69,31 @@ public class TeamService {
 
     @Transactional
     public boolean addMember(String email,Long teamId) throws Exception {
-        Member member = memberRepository.findByEmail(email).get();
-        if(member==null) throw new UserNotFoundException(email + "인 사용자가 없습니다");
-        Team team = teamRepository.findById(teamId).get();
-        team.addMember(member);
-        return true;
+        try {
+            Member member = memberRepository.findByEmail(email).get();
+            if (member == null) throw new UserNotFoundException(email + "인 사용자가 없습니다");
+            Team team = teamRepository.findById(teamId).get();
+            team.addMember(member);
+            team.getChatRoom().addMember(member);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public Member findTeamAdmin(String to) {
-        Team team = teamCustomRepsitory.findByIdToMember(to);
-        return team.getTeamAdmin();
+    public String findTeamAdminEmail(String to) throws TeamNotFoundException {
+        Team team = teamRepository.findById(Long.valueOf(to)).get();
+        if(team==null) throw new TeamNotFoundException(to);
+        String email = team.getTeamAdmin().getEmail();
+        return email;
+    }
+
+    public List<String> findAllMembers(String to) {
+        Team team = teamRepository.findById(Long.valueOf(to)).get();
+        return team.getMembers().stream().map((member) -> member.getEmail()).collect(Collectors.toList());
+
+
+
     }
 }

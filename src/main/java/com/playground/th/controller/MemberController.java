@@ -2,8 +2,6 @@ package com.playground.th.controller;
 
 import com.playground.th.controller.dto.MemberDto;
 import com.playground.th.controller.dto.ResponseLoginSuccessDto;
-import com.playground.th.controller.dto.ResponseMyProfileDto;
-import com.playground.th.controller.dto.responseDto.ResponseChatRoomDto;
 import com.playground.th.controller.dto.responseDto.ResponseDto;
 import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
@@ -12,8 +10,6 @@ import com.playground.th.service.MemberService;
 import com.playground.th.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,10 +58,11 @@ public class MemberController {
     public Set<Team> myChatRoom(@RequestHeader("Authorization")String tokenHeader){
         String token = JwtUtil.getTokenFromHeader(tokenHeader);
         String userEmail = JwtUtil.getUserEmailFromToken(token);
-        return memberService.findAllRooms(userEmail);
+        return memberService.findAllMyTeams(userEmail);
     }
+
     @PostMapping("/my/profile")
-    public ResponseMyProfileDto myProfile(@RequestHeader("Authorization")String tokenHeader){
+    public Member myProfile(@RequestHeader("Authorization")String tokenHeader){
         String token = JwtUtil.getTokenFromHeader(tokenHeader);
         String userEmail = JwtUtil.getUserEmailFromToken(token);
         return memberService.findByEmailToProfile(userEmail);
