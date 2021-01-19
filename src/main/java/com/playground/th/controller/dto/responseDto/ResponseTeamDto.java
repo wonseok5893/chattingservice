@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseTeamDto {
-    private String chatRoomId;
-    private TeamCreateForm team;
+    private int result;
+    private String message;
 }

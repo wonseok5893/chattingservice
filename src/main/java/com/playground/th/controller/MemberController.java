@@ -67,4 +67,11 @@ public class MemberController {
         String userEmail = JwtUtil.getUserEmailFromToken(token);
         return memberService.findByEmailToProfile(userEmail);
     }
+
+    @PostMapping("/member/login/again")
+    public ResponseDto againLogin(@RequestHeader("Authorization") String tokenHeader, String fcmToken){
+        String token = JwtUtil.getTokenFromHeader(tokenHeader);
+        String userEmail = JwtUtil.getUserEmailFromToken(token);
+        return memberService.loginAgain(userEmail,fcmToken);
+    }
 }

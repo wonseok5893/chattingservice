@@ -3,12 +3,14 @@ package com.playground.th.service;
 import com.playground.th.controller.dto.MemberDto;
 import com.playground.th.controller.dto.ResponseMyProfileDto;
 import com.playground.th.controller.dto.responseDto.ResponseChatRoomDto;
+import com.playground.th.controller.dto.responseDto.ResponseDto;
 import com.playground.th.domain.ImageFile;
 import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
 import com.playground.th.repository.MemberCustomRepository;
 import com.playground.th.repository.MemberRepository;
 import com.playground.th.repository.TeamRepository;
+import com.playground.th.security.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -48,12 +50,16 @@ public class MemberService {
             return true;
         }
     }
-
+    @Transactional
     public Member login(MemberDto memberDto) {
         try {
             Member member = memberRepository.findByEmail(memberDto.getEmail()).get();
-            if (passwordEncoder.matches(memberDto.getPassword(), member.getPassword()))
+            if (passwordEncoder.matches(memberDto.getPassword(), member.getPassword())) {
+                if(!member.getToken().equals(memberDto.getFcmToken())||member.getToken()==null){
+                    member.setToken(memberDto.getFcmToken());
+                }
                 return member;
+            }
         }catch(NoSuchElementException e) {
             return null;
         }
@@ -72,5 +78,19 @@ public class MemberService {
     public Member findByEmailToProfile(String userEmail) {
         Member member = memberRepository.findByEmail(userEmail).get();
         return member;
+    }
+    @Transactional
+    public ResponseDto loginAgain(String userEmail, String fcmToken) {
+        try {
+            Member member = memberRepository.findByEmail(userEmail).get();
+            if(member==null)throw new UserNotFoundException(userEmail);
+            if (!member.getToken().equals(fcmToken)||member.getToken()==null) {
+                member.setToken(fcmToken);
+            }
+            return new ResponseDto(1, "자동 로그인 성공");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseDto(0,"로그인 실패");
+        }
     }
 }

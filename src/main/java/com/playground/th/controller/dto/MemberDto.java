@@ -22,5 +22,5 @@ public class MemberDto {
     private String hobby;
     private String location;
     private String studentCardImageUrl;
-
+    private String fcmToken;
 }

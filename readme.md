@@ -21,10 +21,45 @@
 5. websocket을 활용한 websokcet 서버
 
 ## URI
-    Get Token
+###    Get Token
     /get/api/token or /member/login
     - /get/api/token (토큰 갱신)
-     
+  
+#####  소모임 상세보기
+|        |                                                                              |
+| ------ | ---------------------------------------------------------------------------- |
+| method | GET                                                                         |
+| url    | /team/{team_id}                                                                  |
+| Header | Authorization                                                               |
+| Params   | ex) <span style="color:gray"></span> |
+| Return | |
+    {
+        "result": 1,
+        "data": {
+            "id": 1,
+            "name": "asdasd",
+            "content": "asdasd",
+            "startDate": "21-01-22",
+            "endDate": "21-03-10",
+            "teamMembers": [
+                {
+                    "id": 2,
+                    "imageUrl": "/upload/image/1610985166432sara-kurfess-6lcT2kRPvnI-unsplash.jpg",
+                    "nickname": "wonseok"
+                },
+                {
+                    "id": 1,
+                    "imageUrl": "/upload/image/1610985144699sara-kurfess-6lcT2kRPvnI-unsplash.jpg",
+                    "nickname": "wonseok"
+                }
+            ],
+            "currentMemberSize": 3,
+            "category": "soccer",
+            "location": "몰라몰라 222",
+            "teamImageUrl": "/upload/image/bruce-mars-FWVMhUa_wbY-unsplash.jpg"
+        }
+    }
+
 
 ## 걔획
     - [~1/23] 파이널 발표 / 시연 
