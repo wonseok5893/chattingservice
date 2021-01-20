@@ -1,6 +1,7 @@
 package com.playground.th.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.playground.th.controller.dto.TeamCreateForm;
 import com.playground.th.exception.ExistMemberInTeam;
 import com.playground.th.exception.NotEnoughMemberSize;
 import lombok.Getter;
@@ -74,6 +75,9 @@ public class Team {
         team.setChatRoom(chatRoom);
         return team;
     }
+    //업데이트
+    //생성 메서드
+
     // 회원 추가
     public boolean addMember(Member member) throws Exception{
         try {

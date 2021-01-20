@@ -3,6 +3,7 @@ package com.playground.th.service;
 import com.playground.th.controller.dto.MemberDto;
 import com.playground.th.domain.ImageFile;
 import com.playground.th.domain.Member;
+import com.playground.th.exception.NotFoundFileException;
 import com.playground.th.repository.ImageFileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
@@ -28,32 +29,44 @@ public class ImageFileService {
 
     private final ImageFileRepository imageFileRepository;
 
-    public String getStudentCardImageUrl(String email, String fileName){
-        return email+"_"+fileName;
+    public String getStudentCardImageUrl(String email, String fileName) {
+        return email + "_" + fileName;
     }
+
     public boolean saveTeamImage(MultipartFile file) throws IOException {
-        if(file.isEmpty())return false;
+        if (file.isEmpty()) return false;
         String fileName = file.getOriginalFilename();
-        String filePath = TEAM_IMAGE_STORAGE_PATH+fileName;
+        String filePath = TEAM_IMAGE_STORAGE_PATH + fileName;
         File newFile = new File(filePath);
         file.transferTo(newFile);
         return true;
     }
-    public boolean saveStudentCard(Member member ,MultipartFile file) throws IOException {
-        if(file.isEmpty())return false;
-        String fileName = member.getEmail()+"_"+file.getOriginalFilename();
-        String filePath = STUDENT_CARD_STORAGE_PATH+fileName;
+
+    public boolean deleteTeamImage(String deleteFileName) throws IOException {
+        File deleteFile = new File(TEAM_IMAGE_STORAGE_PATH+deleteFileName);
+        if (deleteFile.exists()) {
+           return deleteFile.delete();
+        } else {
+            throw new NotFoundFileException(deleteFileName);
+        }
+    }
+
+    public boolean saveStudentCard(Member member, MultipartFile file) throws IOException {
+        if (file.isEmpty()) return false;
+        String fileName = member.getEmail() + "_" + file.getOriginalFilename();
+        String filePath = STUDENT_CARD_STORAGE_PATH + fileName;
         File newFile = new File(filePath);
         file.transferTo(newFile);
         return true;
     }
+
     @Transactional
     public boolean saveImageFile(MultipartFile file, Member member) throws IOException {
-       //파일 저장
-        if(!file.isEmpty()) {
+        //파일 저장
+        if (!file.isEmpty()) {
             // ClassPathResource cpr = new ClassPathResource("");
-            String fileName = System.currentTimeMillis()+file.getOriginalFilename();
-            String filePath = BASE_STORAGE_PATH+fileName;
+            String fileName = System.currentTimeMillis() + file.getOriginalFilename();
+            String filePath = BASE_STORAGE_PATH + fileName;
 
             File newFile = new File(filePath);
             file.transferTo(newFile);            // 이미지 파일 저장
@@ -67,22 +80,5 @@ public class ImageFileService {
         //파일이 없음
         return false;
     }
-    @Transactional
-    public boolean saveProfileImage(MultipartFile file, Member member) throws IOException {
-        //파일 저장
-        if(!file.isEmpty()) {
 
-            String fileName = System.currentTimeMillis()+file.getOriginalFilename();
-            String filePath = BASE_STORAGE_PATH+fileName;
-            File newFile = new File(filePath);
-            file.transferTo(newFile);            // 이미지 파일 저장
-            ImageFile newImageFile = ImageFile.createImageFile(fileName, "/upload/image/" + fileName);
-            // 멤버 저장
-            newImageFile.setMember(member);
-            imageFileRepository.save(newImageFile);
-            return true;
-        }
-        //파일이 없음
-        return false;
-    }
 }

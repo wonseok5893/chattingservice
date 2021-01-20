@@ -34,5 +34,5 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
-  # org.hibernate.type: trace #쿼리 파라미터
+#    org.hibernate.type: trace #쿼리 파라미터
 

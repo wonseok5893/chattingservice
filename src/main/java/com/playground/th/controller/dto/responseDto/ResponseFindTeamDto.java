@@ -22,10 +22,11 @@ public class ResponseFindTeamDto {
     private String category;
     private String location;
     private String teamImageUrl;
+    private Boolean admin;
 
     public ResponseFindTeamDto(Team team, List<ResponseFindTeamMemberDto> lists){
         id = team.getId();
-        name = team.getContent();
+        name = team.getName();
         content = team.getContent();
         startDate = team.getStartDate();
         endDate = team.getEndDate();
@@ -34,5 +35,6 @@ public class ResponseFindTeamDto {
         location = team.getLocation();
         teamImageUrl = team.getTeamImageUrl();
         teamMembers = lists;
+        admin = false;
     }
 }

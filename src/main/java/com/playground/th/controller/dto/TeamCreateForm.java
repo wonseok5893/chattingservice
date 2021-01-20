@@ -15,5 +15,5 @@ public class TeamCreateForm {
     private String startDate;
     private String endDate;
     private String teamImageUrl;
-    private Integer maxMemberCount;
+    private String maxMemberSize;
 }

@@ -5,7 +5,9 @@ import com.playground.th.domain.Member;
 import com.playground.th.domain.Student;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class ResponseMemberMyInfo {
@@ -13,6 +15,7 @@ public class ResponseMemberMyInfo {
     private String location;
     private String university;
     private String introduction;
+    private String hobby;
     private List<String> images;
     private List<ResponseMyTeamInfo> myteams;
 
@@ -21,8 +24,10 @@ public class ResponseMemberMyInfo {
         location = member.getLocation();
         university = member.getStudent().getUniversity();
         introduction = member.getIntroduction();
+        hobby = member.getHobby();
         images = image;
         myteams = teams;
+
     }
 }
 

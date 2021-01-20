@@ -10,12 +10,16 @@ public class ResponseMyTeamInfo {
     private String teamImageUrl;
     private String name;
     private String location;
+    private String category;
+    private int maxMemberSize;
     private int currentMemberSize;
 
     public ResponseMyTeamInfo(Team team){
         id = team.getId();
         teamImageUrl = team.getTeamImageUrl();
         name = team.getName();
+        category = team.getCategory();
+        maxMemberSize = team.getMaxMemberCount();
         location = team.getLocation();
         currentMemberSize = team.getCurrentMemberCount();
     }

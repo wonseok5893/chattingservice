@@ -17,6 +17,6 @@ public class Message {
     private Long sendTime;
 
     public String parseToJson() {
-        return "{\"aria\":\""+aria+"\",\"type\":\""+type+"\", \"from\":\""+from+"\", \"to\":\""+to+"\", \"text\":\""+text+"\"}";
+        return "{\"aria\":\""+aria+"\",\"type\":\""+type+"\", \"from\":\""+from+"\", \"to\":\""+to+"\", \"text\":\""+text+"\" , \"sendTime\":\""+sendTime+"\"}";
     }
 }

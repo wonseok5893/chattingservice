@@ -6,4 +6,8 @@ public class UserNotFoundException extends RuntimeException{
         super(email + " NotFoundException");
     }
 
+    public UserNotFoundException(Long memberId){
+        super(memberId + " NotFoundException");
+    }
+
 }

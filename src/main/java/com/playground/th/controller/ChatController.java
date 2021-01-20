@@ -39,6 +39,7 @@ public class ChatController {
     @ResponseBody
     public ResponseChatMessageDto sendChatMessage(@RequestHeader("Authorization") String tokenHeader, @RequestBody Message message) {
         // 사용자 변조 검증
+        System.out.println(message);
         if(!message.getType().equals("ACCEPT")) {
             String token = JwtUtil.getTokenFromHeader(tokenHeader);
             String email = JwtUtil.getUserEmailFromToken(token);

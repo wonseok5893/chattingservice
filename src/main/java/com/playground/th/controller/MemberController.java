@@ -77,4 +77,10 @@ public class MemberController {
         ResponseMemberMyInfo myInfo = memberService.findMyInfo(userEmail);
         return new ResponseData<>(1,myInfo);
     }
+
+    @GetMapping("/member/{memberId}")
+    public ResponseData<ResponseMemberMyInfo> getMemberInfo(@PathVariable("memberId")Long memberId){
+        ResponseMemberMyInfo myInfo = memberService.findMemberInfo(memberId);
+        return new ResponseData<>(1,myInfo);
+    }
 }

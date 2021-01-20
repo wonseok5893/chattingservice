@@ -96,9 +96,16 @@ public class MemberService {
     public ResponseMemberMyInfo findMyInfo(String userEmail) {
 
         Member member = memberRepository.findByEmail(userEmail).orElseThrow(() -> new UserNotFoundException(userEmail));
-        List<ResponseMyTeamInfo> teams = member.getMyTeams().stream().map((team) -> new ResponseMyTeamInfo(team)).collect(Collectors.toList());
+        List<ResponseMyTeamInfo> teams = member.getGroups().stream().map((team) -> new ResponseMyTeamInfo(team)).collect(Collectors.toList());
         List<String> images = member.getImages().stream().map((image) -> image.getFileUrl()).collect(Collectors.toList());
         return new ResponseMemberMyInfo(member, images, teams);
 
+    }
+
+    public ResponseMemberMyInfo findMemberInfo(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new UserNotFoundException(memberId));
+        List<ResponseMyTeamInfo> teams = member.getGroups().stream().map((team) -> new ResponseMyTeamInfo(team)).collect(Collectors.toList());
+        List<String> images = member.getImages().stream().map((image) -> image.getFileUrl()).collect(Collectors.toList());
+        return new ResponseMemberMyInfo(member, images, teams);
     }
 }
