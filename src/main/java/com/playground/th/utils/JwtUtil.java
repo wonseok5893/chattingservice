@@ -75,10 +75,9 @@ public class JwtUtil {
     private static Map<String, Object> createClaims(Member member) {
         // 공개 클레임에 사용자의 이름과 이메일을 설정하여 정보를 조회할 수 있다.
         Map<String, Object> claims = new HashMap<>();
-
+        claims.put("id",member.getId());
         claims.put("email", member.getEmail());
         claims.put("role", member.getRole());
-        claims.put("nickname", member.getNickname());
 
         return claims;
     }
@@ -101,6 +100,10 @@ public class JwtUtil {
     public static String getUserNicknameFromToken(String token) {
         Claims claims = getClaimsFormToken(token);
         return (String) claims.get("nickname");
+    }
+    public static Long getUserIdFromToken(String token) {
+        Claims claims = getClaimsFormToken(token);
+        return  Long.valueOf(String.valueOf(claims.get("id")));
     }
 
     private static UserRole getRoleFromToken(String token) {

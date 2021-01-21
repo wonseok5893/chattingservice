@@ -8,9 +8,9 @@ import lombok.Getter;
 
 @Getter
 public class ResponseLoginSuccessDto extends ResponseDto {
-    private String token ;
+    private String token;
     public ResponseLoginSuccessDto(Member member) {
-        super(1,"로그인 성공");
+        super(member.getId(),"로그인 성공");
         this.token = JwtUtil.generateJwtToken(member);
     }
 }

@@ -43,11 +43,17 @@ public class ImageFileService {
     }
 
     public boolean deleteTeamImage(String deleteFileName) throws IOException {
-        File deleteFile = new File(TEAM_IMAGE_STORAGE_PATH+deleteFileName);
-        if (deleteFile.exists()) {
-           return deleteFile.delete();
-        } else {
-            throw new NotFoundFileException(deleteFileName);
+        try {
+            System.out.println("delete File PATH" + TEAM_IMAGE_STORAGE_PATH + deleteFileName);
+            File deleteFile = new File(TEAM_IMAGE_STORAGE_PATH + deleteFileName);
+            if (deleteFile.exists()) {
+                return deleteFile.delete();
+            } else {
+                throw new NotFoundFileException(deleteFileName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

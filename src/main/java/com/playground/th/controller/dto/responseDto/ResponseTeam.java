@@ -14,6 +14,7 @@ public class ResponseTeam {
     private String location;
     private String category;
     private String teamImageUrl;
+
     public ResponseTeam(Team team){
         teamId = team.getId();
         name = team.getName();

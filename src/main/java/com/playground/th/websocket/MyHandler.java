@@ -24,7 +24,7 @@ import java.util.Map;
 public class MyHandler extends TextWebSocketHandler {
     private ChatService chatService;
     private static List<WebSocketSession> users;
-    private static Map<String,WebSocketSession> userMap;
+    private static Map<Long,WebSocketSession> userMap;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     protected MyHandler() {
@@ -37,10 +37,10 @@ public class MyHandler extends TextWebSocketHandler {
         System.out.println("hello new Session!!");
         users.add(session);
     }
-    public void sendToMemberByEmail(String email, Message message) throws Exception {
-        if(userMap.get(email)!=null) {
+    public void sendToMemberById(Long id, Message message) throws Exception {
+        if(userMap.get(id)!=null) {
             convertByHeader(message);
-            WebSocketSession webSocketSession = (WebSocketSession) userMap.get(email);
+            WebSocketSession webSocketSession = (WebSocketSession) userMap.get(id);
             TextMessage textMessage = new TextMessage(message.parseToJson());
             webSocketSession.sendMessage(textMessage);
         }

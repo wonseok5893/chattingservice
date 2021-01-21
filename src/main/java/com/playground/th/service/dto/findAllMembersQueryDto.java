@@ -6,6 +6,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class findAllMembersQueryDto {
-    private String email;
+    private Long id;
     private String token;
 }

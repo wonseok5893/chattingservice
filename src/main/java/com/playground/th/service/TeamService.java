@@ -9,6 +9,7 @@ import com.playground.th.domain.ChatRoom;
 import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
 import com.playground.th.exception.NotAllowedOverCurrentMemberSize;
+import com.playground.th.exception.NotFoundFileException;
 import com.playground.th.exception.TeamNotFoundException;
 import com.playground.th.repository.ChatRoomRepository;
 import com.playground.th.repository.MemberRepository;
@@ -42,7 +43,7 @@ public class TeamService {
         try {
             Member member = memberRepository.findByEmail(teamDto.getEmail()).orElseThrow(() -> new UserNotFoundException(teamDto.getEmail()));
             //채팅방 생성
-            ChatRoom chatRoom = ChatRoom.groupCreate(teamDto.getName(), Integer.parseInt(teamDto.getMaxMemberSize()), member);
+            ChatRoom chatRoom = ChatRoom.groupCreate(teamDto.getName(), Integer.parseInt(teamDto.getMaxMemberSize()), member,teamDto.getTeamImageUrl());
             //팀 생성
             Team team = Team.createTeam(teamDto.getName(), teamDto.getContent()
                     , teamDto.getLocation(), teamDto.getCategory()
@@ -75,9 +76,10 @@ public class TeamService {
             Team team = teamRepository.findById(teamId).orElseThrow(()->new TeamNotFoundException(teamId));
             Set<Member> members = team.getMembers();
             List<ResponseFindTeamMemberDto> memberLists = members.stream().map((member) -> new ResponseFindTeamMemberDto(member)).collect(Collectors.toList());
-            ResponseFindTeamDto responseFindTeamDto = new ResponseFindTeamDto(team, memberLists);
+            Member teamAdmin = team.getTeamAdmin();
+            ResponseFindTeamDto responseFindTeamDto = new ResponseFindTeamDto(team,teamAdmin, memberLists);
+            if(teamAdmin.getEmail().equals(email)) responseFindTeamDto.setAdmin(true);
             // 방장 검증
-            if(team.getTeamAdmin().getEmail().equals(email)) responseFindTeamDto.setAdmin(true);
             return responseFindTeamDto;
         }catch(Exception e){
             e.printStackTrace();
@@ -86,10 +88,10 @@ public class TeamService {
     }
 
     @Transactional
-    public boolean addMember(String email,Long teamId) throws Exception {
+    public boolean addMember(Long id,Long teamId) throws Exception {
         try {
-            Member member = memberRepository.findByEmail(email).get();
-            if (member == null) throw new UserNotFoundException(email + "인 사용자가 없습니다");
+            Member member = memberRepository.findById(id).get();
+            if (member == null) throw new UserNotFoundException(id + "인 사용자가 없습니다");
             Team team = teamRepository.findById(teamId).get();
             team.addMember(member);
             team.getChatRoom().addMember(member);
@@ -100,18 +102,14 @@ public class TeamService {
         }
     }
 
-    public String findTeamAdminEmail(String to) throws TeamNotFoundException {
+    public Long findTeamAdminId(String to) throws TeamNotFoundException {
         Team team = teamRepository.findById(Long.valueOf(to)).get();
         if(team==null) throw new TeamNotFoundException(to);
-        String email = team.getTeamAdmin().getEmail();
-        return email;
+        return team.getTeamAdmin().getId();
     }
 
 
-    public List<findAllMembersQueryDto> findAllMembersEmail(String to) {
-        Team team = teamRepository.findById(Long.valueOf(to)).get();
-        return team.getMembers().stream().map((member) -> new findAllMembersQueryDto(member.getEmail(),member.getToken())).collect(Collectors.toList());
-    }
+
 
 
     @Transactional
@@ -124,12 +122,33 @@ public class TeamService {
             if(file!=null) {
                 String[] split = team.getTeamImageUrl().split("/");
                 String existFileName = split[split.length - 1];
+                System.out.println(existFileName+" 이거 ");
                 if (!file.getOriginalFilename().equals(existFileName)) {
-                    imageFileService.deleteTeamImage(existFileName);
+                    if(!imageFileService.deleteTeamImage(existFileName))throw new NotFoundFileException(existFileName);
                     team.setTeamImageUrl("/upload/image/" + file.getOriginalFilename());
                     imageFileService.saveTeamImage(file);
                 }
             }
+            team.setName(teamDto.getName());
+            team.setContent(teamDto.getContent());
+            team.setLocation(teamDto.getLocation());
+            team.setCategory(teamDto.getCategory());
+            team.setMaxMemberCount(Integer.parseInt(teamDto.getMaxMemberSize()));
+            team.setStartDate(teamDto.getStartDate());
+            team.setEndDate(teamDto.getEndDate());
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Transactional
+    public boolean updateTeam(Long teamId, TeamCreateForm teamDto) {
+        try{
+            Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamNotFoundException(teamId));
+            if(!team.getTeamAdmin().getEmail().equals(teamDto.getEmail())) throw new AuthenticationException("방장이 아닌 잘못된 접근");
+            if(team.getCurrentMemberCount()>Integer.parseInt(teamDto.getMaxMemberSize())) throw new NotAllowedOverCurrentMemberSize();
             team.setName(teamDto.getName());
             team.setContent(teamDto.getContent());
             team.setLocation(teamDto.getLocation());

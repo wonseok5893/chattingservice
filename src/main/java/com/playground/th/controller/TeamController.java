@@ -27,10 +27,11 @@ public class TeamController {
         String email = JwtUtil.getUserEmailFromToken(token);
         teamDto.setEmail(email);
         if(!file.isEmpty()) {
+            System.out.println(file.getOriginalFilename());
             teamDto.setTeamImageUrl("/upload/image/"+file.getOriginalFilename());
             imageFileService.saveTeamImage(file);
         }
-        return teamService.createTeam(teamDto)?new ResponseDto(1,"성공적으로 소모임그룹을 만들었습니다."): new ResponseDto(0,"실패");
+        return teamService.createTeam(teamDto)?new ResponseDto(1L,"성공적으로 소모임그룹을 만들었습니다."): new ResponseDto(0L,"실패");
     }
 
     //모든 소모임 검색
@@ -50,15 +51,24 @@ public class TeamController {
         return new ResponseData<>(1,teamInfo);
     }
 
-    @PostMapping("/update/{teamId}")
-    public ResponseDto updateTeam(@RequestHeader("Authorization")String tokenHeader, @RequestPart("file") MultipartFile file, TeamCreateForm teamDto,@PathVariable("teamId")Long teamId) throws IOException {
+    @PostMapping("/update/all/{teamId}")
+    public ResponseDto updateTeamWithFile(@RequestHeader("Authorization")String tokenHeader, @RequestPart("file") MultipartFile file, TeamCreateForm teamDto,@PathVariable("teamId")Long teamId) throws IOException {
         String token = JwtUtil.getTokenFromHeader(tokenHeader);
         String email = JwtUtil.getUserEmailFromToken(token);
         teamDto.setEmail(email);
 
-        return teamService.updateTeam(file, teamId,teamDto)?new ResponseDto(1,"성공적으로 업데이트 하였습니다."): new ResponseDto(0,"업데이트 실패");
+        return teamService.updateTeam(file, teamId,teamDto)?new ResponseDto(1L,"성공적으로 업데이트 하였습니다."): new ResponseDto(0L,"업데이트 실패");
+    }
+    @PostMapping("/update/info/{teamId}")
+    public ResponseDto updateTeam(@RequestHeader("Authorization")String tokenHeader, TeamCreateForm teamDto,@PathVariable("teamId")Long teamId) throws IOException {
+        String token = JwtUtil.getTokenFromHeader(tokenHeader);
+        String email = JwtUtil.getUserEmailFromToken(token);
+        teamDto.setEmail(email);
+
+        return teamService.updateTeam(teamId,teamDto)?new ResponseDto(1L,"성공적으로 업데이트 하였습니다."): new ResponseDto(0L,"업데이트 실패");
     }
 
+    @PostMapping("")
 
 
 

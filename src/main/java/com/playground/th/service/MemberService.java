@@ -53,27 +53,30 @@ public class MemberService {
 
     @Transactional
     public Member login(MemberDto memberDto) throws RuntimeException {
-        Member member = memberRepository.findByEmail(memberDto.getEmail()).get();
-        if (passwordEncoder.matches(memberDto.getPassword(), member.getPassword())) {
-            if (memberDto.getFcmToken() != null) {
-                if (member.getToken() == null) {
-                    member.setToken(memberDto.getFcmToken());
-                } else {
-                    if (!member.getToken().equals(memberDto.getFcmToken())) {
+        try {
+            Member member = memberRepository.findByEmail(memberDto.getEmail()).orElseThrow(() -> new UserNotFoundException(memberDto.getEmail()));
+            if (passwordEncoder.matches(memberDto.getPassword(), member.getPassword())) {
+                if (memberDto.getFcmToken() != null) {
+                    memberDto.setFcmToken(memberDto.getFcmToken().substring(1, memberDto.getFcmToken().length() - 1));
+                    if (member.getToken() == null) {
                         member.setToken(memberDto.getFcmToken());
-
+                    } else {
+                        if (!member.getToken().equals(memberDto.getFcmToken())) {
+                            member.setToken(memberDto.getFcmToken());
+                        }
                     }
                 }
             }
+            return member;
+        }catch(Exception e){
+          e.printStackTrace();
+          return null;
         }
-        return member;
     }
 
 
     public Set<Team> findAllMyTeams(String email) {
-
         Member member = memberRepository.findByEmail(email).get();
-
         return member.getGroups();
 
     }
@@ -81,25 +84,24 @@ public class MemberService {
     @Transactional
     public ResponseDto loginAgain(String userEmail, String fcmToken) throws RuntimeException {
         try {
+            fcmToken =fcmToken.substring(1,fcmToken.length()-1);
             Member member = memberRepository.findByEmail(userEmail).orElseThrow(() -> new UserNotFoundException(userEmail));
             if (fcmToken == null) throw new TokenNotExistException();
             if (!member.getToken().equals(fcmToken) || member.getToken() == null) {
                 member.setToken(fcmToken);
             }
-            return new ResponseDto(1, "자동 로그인 성공");
+            return new ResponseDto(1L, "자동 로그인 성공");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseDto(0, "로그인 실패");
+            return new ResponseDto(0L, "로그인 실패");
         }
     }
 
     public ResponseMemberMyInfo findMyInfo(String userEmail) {
-
         Member member = memberRepository.findByEmail(userEmail).orElseThrow(() -> new UserNotFoundException(userEmail));
         List<ResponseMyTeamInfo> teams = member.getGroups().stream().map((team) -> new ResponseMyTeamInfo(team)).collect(Collectors.toList());
         List<String> images = member.getImages().stream().map((image) -> image.getFileUrl()).collect(Collectors.toList());
         return new ResponseMemberMyInfo(member, images, teams);
-
     }
 
     public ResponseMemberMyInfo findMemberInfo(Long memberId) {

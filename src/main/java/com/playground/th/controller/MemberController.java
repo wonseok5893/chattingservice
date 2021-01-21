@@ -37,14 +37,14 @@ public class MemberController {
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         Member newMember = memberService.join(memberDto);
         //실패시
-        if(newMember==null)return new ResponseDto(0,"회원가입 실패");
+        if(newMember==null)return new ResponseDto(0L,"회원가입 실패");
         //성공시 학생증 보관
         imageFileService.saveStudentCard(newMember,file);
         // 사진 있으면 보관
         for(MultipartFile image: images)
         imageFileService.saveImageFile(image,newMember);
 
-        return new ResponseDto(1,"성공적으로 회원가입 하였습니다.");
+        return new ResponseDto(1L,"성공적으로 회원가입 하였습니다.");
     }
     @PostMapping("/member/login")
     public ResponseDto login(@RequestBody MemberDto memberDto) {
@@ -53,7 +53,7 @@ public class MemberController {
             return new ResponseLoginSuccessDto(member);
         }
         else
-            return new ResponseDto(0,"로그인 실패");
+            return new ResponseDto(0L,"로그인 실패");
     }
 
     @PostMapping("/my/teams")
@@ -83,4 +83,5 @@ public class MemberController {
         ResponseMemberMyInfo myInfo = memberService.findMemberInfo(memberId);
         return new ResponseData<>(1,myInfo);
     }
+
 }

@@ -2,6 +2,8 @@ package com.playground.th.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.playground.th.chat.Message;
+import com.playground.th.controller.dto.chat.ChatRoomCreateForm;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -30,6 +32,8 @@ public class ChatRoom {
 
     private Integer currentMemberSize;
     private Integer maxMemberSize;
+
+    private String chatImageUrl;
     @ManyToMany
     @JoinTable(name = "chatroom_member", joinColumns = @JoinColumn(name = "chatroom_id"),
             inverseJoinColumns = @JoinColumn(name = "member_id"))
@@ -48,7 +52,7 @@ public class ChatRoom {
     }
 
     //생성 메서드
-    public static ChatRoom groupCreate(String name,int maxMemberSize, Member member) {
+    public static ChatRoom groupCreate(String name, int maxMemberSize, Member member, String teamImageUrl) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setRoomId(UUID.randomUUID().toString());
         chatRoom.setName(name);
@@ -56,6 +60,7 @@ public class ChatRoom {
         chatRoom.setCurrentMemberSize(1);
         chatRoom.setMaxMemberSize(maxMemberSize);
         chatRoom.setType(ChatRoomType.GROUP);
+        chatRoom.setChatImageUrl(teamImageUrl);
         return chatRoom;
     }
     // uni request from id to id
@@ -66,6 +71,17 @@ public class ChatRoom {
         this.setCurrentMemberSize(this.getCurrentMemberSize()+1);
         this.getJoinMembers().add(member);
         return true;
+    }
+    // ENTER
+    public static ChatRoom uniCreate(Member other,Member me){
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoom.setRoomId(UUID.randomUUID().toString());
+        chatRoom.setType(ChatRoomType.PERSON);
+        chatRoom.addMember(other);
+        chatRoom.addMember(me);
+        chatRoom.setName(other.getNickname()+", "+me.getNickname());
+        chatRoom.setMaxMemberSize(2);
+        return chatRoom;
     }
 
 }

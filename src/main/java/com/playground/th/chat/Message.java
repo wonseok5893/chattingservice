@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class Message {
     private String aria;
     private String type;
-    private String from; //user token <- string user_id 로 사용
+    private Long from; //user token <- string user_id 로 사용
     private String to; //
     private String text;
     private Long sendTime;
