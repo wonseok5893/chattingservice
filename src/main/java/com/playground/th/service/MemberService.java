@@ -90,7 +90,7 @@ public class MemberService {
             if (!member.getToken().equals(fcmToken) || member.getToken() == null) {
                 member.setToken(fcmToken);
             }
-            return new ResponseDto(1L, "자동 로그인 성공");
+            return new ResponseDto(member.getId(), "자동 로그인 성공");
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseDto(0L, "로그인 실패");
@@ -98,10 +98,15 @@ public class MemberService {
     }
 
     public ResponseMemberMyInfo findMyInfo(String userEmail) {
-        Member member = memberRepository.findByEmail(userEmail).orElseThrow(() -> new UserNotFoundException(userEmail));
-        List<ResponseMyTeamInfo> teams = member.getGroups().stream().map((team) -> new ResponseMyTeamInfo(team)).collect(Collectors.toList());
-        List<String> images = member.getImages().stream().map((image) -> image.getFileUrl()).collect(Collectors.toList());
+        try {
+            Member member = memberRepository.findByEmail(userEmail).orElseThrow(() -> new UserNotFoundException(userEmail));
+            List<ResponseMyTeamInfo> teams = member.getGroups().stream().map((team) -> new ResponseMyTeamInfo(team)).collect(Collectors.toList());
+            List<String> images = member.getImages().stream().map((image) -> image.getFileUrl()).collect(Collectors.toList());
         return new ResponseMemberMyInfo(member, images, teams);
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public ResponseMemberMyInfo findMemberInfo(Long memberId) {

@@ -5,6 +5,7 @@ import com.playground.th.controller.dto.responseDto.ResponseData;
 import com.playground.th.controller.dto.responseDto.ResponseFindTeamDto;
 import com.playground.th.controller.dto.responseDto.ResponseTeam;
 import com.playground.th.controller.dto.responseDto.team.ResponseFindTeamMemberDto;
+
 import com.playground.th.domain.ChatRoom;
 import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
@@ -88,17 +89,18 @@ public class TeamService {
     }
 
     @Transactional
-    public boolean addMember(Long id,Long teamId) throws Exception {
+    public Long addMember(Long id,Long teamId) throws Exception {
         try {
             Member member = memberRepository.findById(id).get();
+            System.out.println(member);
             if (member == null) throw new UserNotFoundException(id + "인 사용자가 없습니다");
             Team team = teamRepository.findById(teamId).get();
             team.addMember(member);
             team.getChatRoom().addMember(member);
-            return true;
+            return team.getChatRoom().getId();
         }catch (Exception e){
             e.printStackTrace();
-            return false;
+            return 0L;
         }
     }
 
@@ -161,5 +163,14 @@ public class TeamService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<ResponseTeam> findTeamsBySearch(String name) {
+        return teamRepository.findByNameContains(name).stream().map((team)->new ResponseTeam(team)).collect(Collectors.toList());
+    }
+
+    public Long findChatRoomId(String to) {
+        Team team = teamRepository.findById(Long.valueOf(to)).orElseThrow(() -> new TeamNotFoundException(to));
+        return team.getChatRoom().getId();
     }
 }

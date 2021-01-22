@@ -16,8 +16,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 작성한 인터셉터를 추가한다.
         registry.addInterceptor(jwtTokenInterceptor())
                 // 예제의 경우 전체 사용자를 조회하는 /user/findAll 에 대해 토큰 검사를 진행한다.
-                .addPathPatterns("/my/chatRooms").addPathPatterns("/team/*")
-        .addPathPatterns("/member/login/again");
+                .addPathPatterns("/my/chatRooms")
+                .addPathPatterns("/member/login/again");
     }
 
     @Bean

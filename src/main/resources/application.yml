@@ -31,8 +31,8 @@ spring:
  #   port: 6520
  # session:
  #   store-type: redis
-logging:
-  level:
-    org.hibernate.SQL: debug
+#logging:
+ # level:
+ #   org.hibernate.SQL: debug
 #    org.hibernate.type: trace #쿼리 파라미터
 

@@ -32,8 +32,10 @@ public class MessageListener {
 
         try {
             //그룹 채팅
+            // 요청 수락시 -> to teamId
+            // 나머지 -> to chatRoomId
             if (message.getAria().equals("GROUP")) {
-            // 소모임 참가 요청
+                // 소모임 참가 요청
                 if (message.getType().equals("REQUEST") || message.getType().equals("ACCEPT")) {
                     //방장 아이디
                     Long teamAdminId = teamService.findTeamAdminId(message.getTo());
@@ -43,10 +45,13 @@ public class MessageListener {
                     }
                     // 방장 -> 소모임 참가 수락
                     if (message.getType().equals("ACCEPT")) {
+                        //팀아이디 -> 채팅방 아이디
                         //방장 검증 후
                         //## 생략
-                        if (teamService.addMember(message.getFrom(), Long.valueOf(message.getTo()))) {
+                        Long chatRoomId = teamService.addMember(message.getFrom(), Long.valueOf(message.getTo()));
+                        if (chatRoomId!=0) {
                             message.setType("ENTER");
+                            message.setTo(String.valueOf(chatRoomId));
                             sendByBroadCastByChatRoomId(message);
                         }
                         return;
@@ -57,7 +62,7 @@ public class MessageListener {
             }
             //1:1 채팅
             if(message.getAria().equals("PERSON")){
-                if(message.getType().equals("ENTER")){
+                if(message.getType().equals("START")){
                     //1:1 채팅방 생성
                     ChatRoom chatRoom = chatService.createPersonChatRoom(message);
                     message.setTo(String.valueOf(chatRoom.getId()));
@@ -87,5 +92,6 @@ public class MessageListener {
             }
         });
     }
+
 
 }

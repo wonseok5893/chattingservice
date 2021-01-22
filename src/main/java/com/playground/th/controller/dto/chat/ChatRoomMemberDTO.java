@@ -18,7 +18,7 @@ public class ChatRoomMemberDTO {
         type = String.valueOf(chatRoom.getType());
         id = String.valueOf(chatRoom.getId());
         name = chatRoom.getName();
-        if(type.equals("group"))
+        if(type.equals("GROUP"))
             this.teamImageUrl = chatRoom.getChatImageUrl();
         membersInfo = chatRoom.getJoinMembers().stream().map((member)->new ChatMemberDTO(member)).collect(Collectors.toList());
     }

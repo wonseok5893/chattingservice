@@ -97,10 +97,6 @@ public class JwtUtil {
         return (String) claims.get("email");
     }
 
-    public static String getUserNicknameFromToken(String token) {
-        Claims claims = getClaimsFormToken(token);
-        return (String) claims.get("nickname");
-    }
     public static Long getUserIdFromToken(String token) {
         Claims claims = getClaimsFormToken(token);
         return  Long.valueOf(String.valueOf(claims.get("id")));

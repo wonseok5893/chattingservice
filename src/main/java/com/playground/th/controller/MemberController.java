@@ -71,11 +71,12 @@ public class MemberController {
     }
 
     @PostMapping("/my/info")
-    public ResponseData<ResponseMemberMyInfo> getMyInfo(@RequestHeader("Authorization") String tokenHeader, String fcmToken) {
+    public ResponseData<ResponseMemberMyInfo> getMyInfo(@RequestHeader("Authorization") String tokenHeader) {
         String token = JwtUtil.getTokenFromHeader(tokenHeader);
         String userEmail = JwtUtil.getUserEmailFromToken(token);
         ResponseMemberMyInfo myInfo = memberService.findMyInfo(userEmail);
-        return new ResponseData<>(1,myInfo);
+        return  myInfo !=null?new ResponseData<>(1,myInfo):new ResponseData<>(0,null);
+
     }
 
     @GetMapping("/member/{memberId}")

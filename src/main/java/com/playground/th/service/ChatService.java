@@ -6,6 +6,7 @@ import com.playground.th.controller.dto.chat.ChatRoomMemberDTO;
 import com.playground.th.domain.ChatRoom;
 import com.playground.th.domain.Member;
 import com.playground.th.domain.Team;
+import com.playground.th.exception.ChatRoomNotExisited;
 import com.playground.th.repository.ChatRoomCustomRepository;
 import com.playground.th.repository.ChatRoomRepository;
 import com.playground.th.repository.MemberRepository;
@@ -14,6 +15,7 @@ import com.playground.th.security.exception.UserNotFoundException;
 import com.playground.th.service.dto.findAllMembersQueryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
@@ -63,7 +65,7 @@ public class ChatService {
     }
 
     public List<findAllMembersQueryDto> findAllMembersById(String to) {
-        ChatRoom chatRoom = chatRoomRepository.findById(Long.valueOf(to)).get();
+        ChatRoom chatRoom = chatRoomRepository.findById(Long.valueOf(to)).orElseThrow(()->new ChatRoomNotExisited(to));
         return chatRoom.getJoinMembers().stream().map((member) -> new findAllMembersQueryDto(member.getId(), member.getToken())).collect(Collectors.toList());
     }
 
@@ -74,5 +76,19 @@ public class ChatService {
         Member other = memberRepository.findById(Long.valueOf(message.getTo())).orElseThrow(() -> new UserNotFoundException(message.getTo()));
         ChatRoom chatRoom = ChatRoom.uniCreate(other, me);
         return chatRoomRepository.save(chatRoom);
+    }
+
+    public Long checkChatRoom(Long id, Long otherMemberId) {
+        //완전 사기야 사기! 채팅방 이름으로 찾고있어
+        Member me = memberRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        Member other = memberRepository.findById(otherMemberId).orElseThrow(() -> new UserNotFoundException(otherMemberId));
+        ChatRoom possible1 = chatRoomRepository.findByNameContains(me.getNickname() + ", " + other.getNickname());
+        ChatRoom possible2 = chatRoomRepository.findByNameContains(other.getNickname() + ", " + me.getNickname());
+        Long chatRoomId = 0L;
+        if(possible1!=null)
+            chatRoomId = possible1.getId();
+        if(possible2!=null)
+            chatRoomId = possible2.getId();
+        return chatRoomId;
     }
 }

@@ -77,10 +77,11 @@ public class ChatRoom {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setRoomId(UUID.randomUUID().toString());
         chatRoom.setType(ChatRoomType.PERSON);
-        chatRoom.addMember(other);
-        chatRoom.addMember(me);
+        chatRoom.getJoinMembers().add(other);
+        chatRoom.getJoinMembers().add(me);
         chatRoom.setName(other.getNickname()+", "+me.getNickname());
         chatRoom.setMaxMemberSize(2);
+        chatRoom.setCurrentMemberSize(2);
         return chatRoom;
     }
 

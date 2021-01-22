@@ -2,6 +2,7 @@ package com.playground.th.controller;
 
 import com.playground.th.controller.dto.TeamCreateForm;
 import com.playground.th.controller.dto.responseDto.*;
+
 import com.playground.th.domain.Member;
 import com.playground.th.service.ImageFileService;
 import com.playground.th.service.TeamService;
@@ -68,10 +69,9 @@ public class TeamController {
         return teamService.updateTeam(teamId,teamDto)?new ResponseDto(1L,"성공적으로 업데이트 하였습니다."): new ResponseDto(0L,"업데이트 실패");
     }
 
-    @PostMapping("")
+    @GetMapping("/team/search")
+    public ResponseData<List<ResponseTeam>> getSearchTeams(@RequestParam("name") String name){
 
-
-
-
-
+        return new ResponseData<>(1,teamService.findTeamsBySearch(name));
+    }
 }

@@ -5,6 +5,7 @@ import com.playground.th.controller.dto.ChatMessageDto;
 import com.playground.th.controller.dto.chat.ChatRoomMemberDTO;
 import com.playground.th.controller.dto.responseDto.ResponseChatMessageDto;
 import com.playground.th.controller.dto.responseDto.ResponseData;
+import com.playground.th.controller.dto.responseDto.ResponseDto;
 import com.playground.th.domain.ChatMessage;
 import com.playground.th.domain.ChatRoom;
 import com.playground.th.domain.MessageType;
@@ -59,5 +60,14 @@ public class ChatController {
         return new ResponseData<>(1, updateChatRoomsInfo);
     }
 
+
+    @ResponseBody
+    @PostMapping("/check/chatroom")
+    public ResponseDto checkChatRoom(@RequestHeader("Authorization")String tokenHeader,@RequestBody Long otherId){
+        String token = JwtUtil.getTokenFromHeader(tokenHeader);
+        Long id = JwtUtil.getUserIdFromToken(token);
+        Long chatRoomId = chatService.checkChatRoom(id, otherId);
+        return chatRoomId==0?new ResponseDto(chatRoomId,"채팅방이 없습니다."):new ResponseDto(chatRoomId,"채팅방이 있어요");
+    }
 
 }

@@ -7,5 +7,5 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     ChatRoom findByName(String name);
 
 
-
+    ChatRoom findByNameContains(String s);
 }
