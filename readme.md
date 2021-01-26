@@ -45,11 +45,8 @@
 <img width="544" alt="KakaoTalk_20210122_185156763" src="https://user-images.githubusercontent.com/57287086/105812908-56ec8e80-5ff2-11eb-810c-fbc138c7398f.png">
 
 ## 시연 영상 
-
-<div class="iframe_container">
-  <iframe width="560" height="315" src="https://www.youtube.com/watch?v=bV2aWZqrYC4&t=2s" frameborder="0" allowfullscreen></iframe>
-</div>   
-    
+<a href ="https://www.youtube.com/watch?v=bV2aWZqrYC4&t=2s"> PlayGround 채팅 앱</a>
+  
 ## 계획
     - 쿼리 성능 튜닝 ( EnitiyGraph , jpql , queryDsl) 해야함.
 ## refer
