@@ -14,8 +14,8 @@
     - rabbitmq 메시지 큐잉 시스템 활용 해보기 
    
 ## 진행 현황
-1. 채팅 서버 구축  (09/22) 
-2. Stomp/ jpa를 활용한 구현 (09/29)
+1. 채팅 서버 구축  
+2. Stomp/ jpa를 활용한 구현 
 3. Security / JWT 활용한 검증
 4. rabbitmq를 이용한 pub/sub 구조 -> 결합도를 낮춤
 5. websocket을 활용한 websokcet 서버
@@ -36,32 +36,15 @@
     {
         "result": 1,
         "data": {
-            "id": 1,
-            "name": "asdasd",
-            "content": "asdasd",
-            "startDate": "21-01-22",
-            "endDate": "21-03-10",
-            "teamMembers": [
-                {
-                    "id": 2,
-                    "imageUrl": "/upload/image/1610985166432sara-kurfess-6lcT2kRPvnI-unsplash.jpg",
-                    "nickname": "wonseok"
-                },
-                {
-                    "id": 1,
-                    "imageUrl": "/upload/image/1610985144699sara-kurfess-6lcT2kRPvnI-unsplash.jpg",
-                    "nickname": "wonseok"
-                }
-            ],
-            "currentMemberSize": 3,
-            "category": "soccer",
-            "location": "몰라몰라 222",
-            "teamImageUrl": "/upload/image/bruce-mars-FWVMhUa_wbY-unsplash.jpg"
-        }
+                생략 ...
+           }
     }
 
 ## 구조
-    % 그림 1
+<img width="544" alt="KakaoTalk_20210122_185156763" src="https://user-images.githubusercontent.com/57287086/105812908-56ec8e80-5ff2-11eb-810c-fbc138c7398f.png">
+
+## 시연 영상 
+<iframe width="640" height="360" src="https://youtu.be/bV2aWZqrYC4" frameborder="0" gesture="media" allowfullscreen=""></iframe>
 ## 걔획
     - [~1/23] 파이널 발표 / 시연 
     - 쿼리 성능 튜닝 ( EnitiyGraph , jpql , queryDsl) 해야함.
