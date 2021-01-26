@@ -44,7 +44,8 @@
 <img width="544" alt="KakaoTalk_20210122_185156763" src="https://user-images.githubusercontent.com/57287086/105812908-56ec8e80-5ff2-11eb-810c-fbc138c7398f.png">
 
 ## 시연 영상 
-<iframe width="640" height="360" src="https://youtu.be/bV2aWZqrYC4" frameborder="0" gesture="media" allowfullscreen=""></iframe>
+<iframe width="640" height="360" src="https://youtu.be/bV2aWZqrYC4" frameborder="0" gesture="media" allowfullscreen=""></iframe>  
+    
 ## 걔획
     - [~1/23] 파이널 발표 / 시연 
     - 쿼리 성능 튜닝 ( EnitiyGraph , jpql , queryDsl) 해야함.
