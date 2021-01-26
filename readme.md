@@ -19,6 +19,7 @@
 3. Security / JWT 활용한 검증
 4. rabbitmq를 이용한 pub/sub 구조 -> 결합도를 낮춤
 5. websocket을 활용한 websokcet 서버
+6. [~1/23] 파이널 발표 / 시연 
 
 ## URI
 ###    Get Token
@@ -44,10 +45,12 @@
 <img width="544" alt="KakaoTalk_20210122_185156763" src="https://user-images.githubusercontent.com/57287086/105812908-56ec8e80-5ff2-11eb-810c-fbc138c7398f.png">
 
 ## 시연 영상 
-<iframe width="640" height="360" src="https://youtu.be/bV2aWZqrYC4" frameborder="0" gesture="media" allowfullscreen=""></iframe>  
+
+<div class="iframe_container">
+  <iframe width="560" height="315" src="https://www.youtube.com/watch?v=bV2aWZqrYC4&t=2s" frameborder="0" allowfullscreen></iframe>
+</div>   
     
-## 걔획
-    - [~1/23] 파이널 발표 / 시연 
+## 계획
     - 쿼리 성능 튜닝 ( EnitiyGraph , jpql , queryDsl) 해야함.
 ## refer
 - https://daddyprogrammer.org/post/4077/spring-websocket-chatting/?amp
